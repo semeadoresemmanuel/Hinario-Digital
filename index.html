@@ -112,7 +112,7 @@ body.menu-active {
 
 /* Main Menu View Layout */
 .menu-view {
-    padding: 7.5%;
+    padding: 40px 7.5% 7.5% 7.5%;
 }
 
 .top-bar {
@@ -228,6 +228,7 @@ body.menu-active {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-top: clamp(24px, 6vh, 60px);
 }
 
 .listen-on-label {
@@ -793,10 +794,39 @@ body.menu-active {
     }
 }
 
+@media (min-width: 769px) {
+    .center-content {
+        transform: translateY(60px);
+    }
+}
+
 @media (max-width: 768px) {
+    .menu-view,
+    #view-list,
+    #view-song {
+        padding-top: max(12px, env(safe-area-inset-top));
+    }
+    .center-content {
+        margin-top: -45px;
+    }
+    .musical-note-wrapper {
+        margin-bottom: 27px;
+    }
     .musical-note-wrapper,
     .search-img-wrapper {
-        top: -90px;
+        top: -60px;
+    }
+    .list-header {
+        margin-bottom: 8px;
+    }
+    .song-item {
+        padding: 12px 4px;
+    }
+    #view-list.search-hidden .list-header {
+        margin-bottom: 2px;
+    }
+    .listen-group {
+        margin-top: 0px;
     }
 }
     </style>

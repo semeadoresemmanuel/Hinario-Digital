@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initial Font Size (Persistent)
     let currentFontSize = parseFloat(localStorage.getItem('lyricsFontSize')) || 0.75; // 12px initial
+    let currentSong = null;
 
     // Initialize Theme
     let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -146,7 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const words = line.trim().split(/\s+/);
         if (words.length === 0 || line.trim() === '') return false;
         
-        const chordPattern = /^[(]?[A-G][b#]?(m|M|maj|min|dim|aug|sus|7|9|11|13)*(\/[A-G][b#]?)?[)]?$/;
+        // Matches standard chords, including alterations like 2, 4, 5, 6, 7, 9, 11, 13, sus, add, maj, dim, aug, etc.
+        const chordPattern = /^[(]?[A-G][b#]?(m|M|maj|min|dim|aug|sus|add|alt|[245679]|11|13)*(\/[A-G][b#]?[m]?)?[)]?$/;
         let chordCount = 0;
         let specialCount = 0;
         
@@ -162,19 +164,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Process Lyrics to highlight chords and specific markers
     function processLyrics(text) {
         const lines = text.split('\n');
-        return lines.map((line, i) => {
-            const suffix = i < lines.length - 1 ? '\n' : '';
+        let processedLines = [];
+        let lastWasEmpty = true; // start as true to skip leading empty lines
+
+        lines.forEach((line) => {
+            const isChord = isChordLine(line);
             
-            if (isChordLine(line)) {
-                const processedLine = line.replace(/\(2X\)|\[REFRÃO\]/g, '<span class="lyric-marker">$&</span>');
-                return `<span class="chord-line chord">${processedLine}${suffix}</span>`;
+            if (isChord) {
+                if (chordsVisible) {
+                    const processedLine = line.replace(/\(2X\)|\[REFRÃO\]/g, '<span class="lyric-marker">$&</span>');
+                    processedLines.push(`<span class="chord-line chord">${processedLine}</span>`);
+                    lastWasEmpty = false;
+                }
+                // If chords are not visible, we completely skip this line
+            } else {
+                const trimmedLine = line.trim();
+                if (trimmedLine === '') {
+                    if (!lastWasEmpty) {
+                        processedLines.push('');
+                        lastWasEmpty = true;
+                    }
+                } else {
+                    const processedLine = trimmedLine.replace(/\(2X\)|\[REFRÃO\]/g, '<span class="lyric-marker">$&</span>');
+                    processedLines.push(processedLine);
+                    lastWasEmpty = false;
+                }
             }
-            
-            // Trim leading and trailing spaces on lyric lines to guarantee perfect left alignment
-            const trimmedLine = line.trim();
-            const processedLine = trimmedLine.replace(/\(2X\)|\[REFRÃO\]/g, '<span class="lyric-marker">$&</span>');
-            return processedLine + suffix;
-        }).join('');
+        });
+
+        // Trim any trailing empty lines in processedLines
+        while (processedLines.length > 0 && processedLines[processedLines.length - 1] === '') {
+            processedLines.pop();
+        }
+
+        return processedLines.join('\n');
     }
 
     // Ensure titles fit in a single line by dynamically reducing font-size
@@ -279,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open single song
     function openSong(song) {
         if(!song) return; // safeguard
+        currentSong = song;
         searchInput.blur();
         songTitleEl.innerText = song.title; // Montserrat natively renders accents without HTML injection
         
@@ -327,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     listSongsBtn.addEventListener('click', () => {
         document.body.classList.remove('menu-active');
         viewList.classList.remove('search-centered');
+        viewList.classList.add('search-hidden');
         searchInputContainer.style.display = 'none'; // hide search input when just listing all
         clearSearch();
         shouldClearOnNextFocus = true;
@@ -339,6 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchSongsBtn.addEventListener('click', () => {
         document.body.classList.remove('menu-active');
+        viewList.classList.remove('search-hidden');
         searchInputContainer.style.display = 'block';
         clearSearch();
         shouldClearOnNextFocus = true;
@@ -403,6 +429,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             songContentEl.classList.add('no-chords');
         }
+        
+        // Re-process lyrics to collapse empty spaces when chords are hidden
+        if (currentSong) {
+            songContentEl.innerHTML = processLyrics(currentSong.content);
+        }
+        
         updateFabBackBtnVisibility();
     };
 
