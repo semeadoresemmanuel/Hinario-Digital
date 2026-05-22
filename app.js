@@ -279,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open single song
     function openSong(song) {
         if(!song) return; // safeguard
+        searchInput.blur();
         songTitleEl.innerText = song.title; // Montserrat natively renders accents without HTML injection
         
         if (song.author) {
@@ -309,6 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Back to Menu
     function goBackToMenu() {
+        searchInput.blur();
+        clearSearch();
+        shouldClearOnNextFocus = true;
         document.body.classList.add('menu-active');
         document.querySelectorAll('.neon-active').forEach(el => el.classList.remove('neon-active'));
         viewSong.classList.remove('active');
@@ -324,7 +328,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('menu-active');
         viewList.classList.remove('search-centered');
         searchInputContainer.style.display = 'none'; // hide search input when just listing all
-        searchInput.value = '';
+        clearSearch();
+        shouldClearOnNextFocus = true;
         renderSongs();
         viewMenu.classList.remove('active');
         viewMenu.classList.add('hidden');
@@ -335,7 +340,8 @@ document.addEventListener('DOMContentLoaded', () => {
     searchSongsBtn.addEventListener('click', () => {
         document.body.classList.remove('menu-active');
         searchInputContainer.style.display = 'block';
-        searchInput.value = '';
+        clearSearch();
+        shouldClearOnNextFocus = true;
         renderSongs();
         viewList.classList.add('search-centered');
         viewMenu.classList.remove('active');
@@ -403,6 +409,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if(toggleChordsSvgWrapper) toggleChordsSvgWrapper.addEventListener('click', triggerChordToggle);
 
     const searchOverlay = document.getElementById('search-overlay');
+    let shouldClearOnNextFocus = false;
+
+    function clearSearch() {
+        searchInput.value = '';
+        searchOverlay.innerHTML = '';
+        try {
+            const originalType = searchInput.type || 'text';
+            searchInput.type = 'password';
+            searchInput.type = originalType;
+        } catch (e) {
+            // safeguard
+        }
+    }
+
+    searchInput.addEventListener('focus', () => {
+        if (shouldClearOnNextFocus) {
+            shouldClearOnNextFocus = false;
+            searchInput.value = '';
+            searchOverlay.innerHTML = '';
+            // Double clear using timeout to catch asynchronous autofills
+            setTimeout(() => {
+                if (searchInput.value !== '') {
+                    searchInput.value = '';
+                    searchOverlay.innerHTML = '';
+                    searchInput.dispatchEvent(new Event('input'));
+                }
+            }, 50);
+        }
+    });
+
     // Events
     searchInput.addEventListener('input', (e) => {
         const val = e.target.value;

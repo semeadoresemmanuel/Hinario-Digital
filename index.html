@@ -792,6 +792,13 @@ body.menu-active {
         margin-bottom: 12px;
     }
 }
+
+@media (max-width: 768px) {
+    .musical-note-wrapper,
+    .search-img-wrapper {
+        top: -90px;
+    }
+}
     </style>
 </head>
 <body class="menu-active">
@@ -858,7 +865,7 @@ body.menu-active {
                 </button>
                 <div class="search-input-container" id="search-input-container">
                     <div id="search-overlay"></div>
-                    <input type="text" id="search-input" placeholder="BUSCAR MÚSICA">
+                    <input type="text" id="search-input" placeholder="BUSCAR MÚSICA" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
                 </div>
             </header>
 
