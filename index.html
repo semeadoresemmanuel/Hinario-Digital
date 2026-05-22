@@ -75,6 +75,13 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+body.menu-active {
+    overflow: hidden;
+    height: 100vh;
+    position: fixed;
+    width: 100%;
+}
+
 /* Base App Layout */
 .app-container {
     width: 100%;
@@ -193,7 +200,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 40px 0;
+    margin: clamp(16px, 5vh, 40px) 0;
 }
 .musical-note-wrapper {
     position: relative;
@@ -210,7 +217,7 @@ body {
     width: 100%;
     max-width: 80px;
     cursor: pointer;
-    margin-bottom: 40px;
+    margin-bottom: clamp(16px, 5vh, 40px);
 }
 .search-img {
     width: 100%;
@@ -354,9 +361,6 @@ body {
     margin-bottom: 4px;
     margin-left: -6px;
     transition: margin 0.3s ease;
-}
-#view-list.search-centered .list-header {
-    margin: auto 0;
 }
 #view-list.search-centered .list-content {
     display: none;
@@ -790,7 +794,7 @@ body {
 }
     </style>
 </head>
-<body>
+<body class="menu-active">
     <div id="app" class="app-container">
         <!-- Main Menu -->
         <div id="view-menu" class="view active menu-view">

@@ -232,29 +232,34 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateFabBackBtnVisibility() {
         if (!viewSong.classList.contains('active')) return;
         requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                // Temporarily remove the visible class to measure container height without the button's layout contribution
+            // Get viewport height
+            const windowHeight = window.innerHeight;
+            
+            // Get bounding client rects to calculate the pure content height
+            const songContentRect = songContentEl.getBoundingClientRect();
+            const viewSongRect = viewSong.getBoundingClientRect();
+            
+            // Get bottom padding dynamically
+            const viewSongStyle = window.getComputedStyle(viewSong);
+            const paddingBottom = parseFloat(viewSongStyle.paddingBottom) || 20;
+            
+            // Calculate content height (excluding the back button itself)
+            const contentHeight = (songContentRect.bottom - viewSongRect.top) + paddingBottom;
+            
+            // If content overflows the viewport, it is scrollable
+            isSongScrollable = contentHeight > (windowHeight + 5);
+            
+            if (isSongScrollable) {
+                fabBackBtn.classList.add('visible');
+                // Calculate maxScrollVal taking into account the space the button now occupies
+                const newScrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+                maxScrollVal = newScrollHeight - windowHeight;
+                updateFadeInState();
+            } else {
                 fabBackBtn.classList.remove('visible');
                 fabBackBtn.classList.remove('fade-in');
-                
-                const scrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-                const windowHeight = window.innerHeight;
-                isSongScrollable = scrollHeight > windowHeight + 15;
-                
-                if (isSongScrollable) {
-                    fabBackBtn.classList.add('visible');
-                    // Wait for layout to settle with the button allocated, then cache maxScrollVal
-                    requestAnimationFrame(() => {
-                        const newScrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-                        maxScrollVal = newScrollHeight - window.innerHeight;
-                        updateFadeInState();
-                    });
-                } else {
-                    fabBackBtn.classList.remove('visible');
-                    fabBackBtn.classList.remove('fade-in');
-                    maxScrollVal = 0;
-                }
-            });
+                maxScrollVal = 0;
+            }
         });
     }
 
@@ -291,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewList.classList.add('hidden');
         viewSong.classList.remove('hidden');
         viewSong.classList.add('active');
+        document.body.classList.remove('menu-active');
         window.scrollTo(0, 0);
         // Agendamento da re-checagem de tamanho (permite tempo pra renderização sair de display: none)
         requestAnimationFrame(() => {
@@ -303,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Back to Menu
     function goBackToMenu() {
+        document.body.classList.add('menu-active');
         document.querySelectorAll('.neon-active').forEach(el => el.classList.remove('neon-active'));
         viewSong.classList.remove('active');
         viewSong.classList.add('hidden');
@@ -314,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // View Lists Route
     listSongsBtn.addEventListener('click', () => {
+        document.body.classList.remove('menu-active');
         viewList.classList.remove('search-centered');
         searchInputContainer.style.display = 'none'; // hide search input when just listing all
         searchInput.value = '';
@@ -325,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     searchSongsBtn.addEventListener('click', () => {
+        document.body.classList.remove('menu-active');
         searchInputContainer.style.display = 'block';
         searchInput.value = '';
         renderSongs();
