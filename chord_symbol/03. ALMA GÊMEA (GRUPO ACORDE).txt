@@ -1,59 +1,52 @@
 Intro: C#m  F#  B       Em      Bm      F#      Bm     
+F#         Bm
+ALMA GÊMEA DE MINH'ALMA
+Em                   Bm
+FLOR DE LUZ DE MINHA VIDA
+G               Bm
+SUBLIME ESTRELA CAÍDA
+F#             Bm
+DAS BELEZAS DA AMPLIDÃO
 
- F#      Bm
+QUANDO EU ERRAVA NO MUNDO
+Em                  Bm
+TRISTE E SÓ, NO MEU CAMINHO
+G         Bm
+CHEGASTE, DEVAGARINHO
+F#              B
+E ME ENCHESTE O CORAÇÃO
 
-Alma gêmea de minha alma
-Em                      Bm
-Flor de luz de minha vida
-G                       Bm
-Sublime estrela caída
-F#                      Bm
-Das belezas da amplidão
+[REFRÃO]
+                       C#m
+VINHAS NAS BÊNÇÃOS DOS DEUSES
+F#        B
+DA DIVINA CLARIDADE
+G#m        C#m
+TECER-ME A FELICIDADE
+F#             B
+EM SORRISOS DE ESPLENDOR
+               C#m
+ÉS MEU TESOURO INFINITO
+D#             G#m
+JURO-TE ETERNA ALIANÇA
+Em             Bm
+PORQUE SOU TUA ESPERANÇA
+F#               B
+COMO ÉS TODO MEU AMOR
 
-Quando eu errava no mundo
-Em                              Bm
-Triste e só, no meu caminho
-G                       Bm
-Chegaste, devagarinho
-F#                      B       F#      B
-E me encheste o coração
+F#         Bm
+ALMA GÊMEA DE MINH'ALMA
+Em                    Bm
+SE EU TE PERDER ALGUM DIA...
+G                Bm
+SEREI TUA ESCURA AGONIA
+F#                  Bm
+DA SAUDADE DOS TEUS VÉUS...
 
-Refrão:
-                                C#m
-Vinhas nas bênçãos dos deuses
-F#                    B
-Da divina claridade
-G#m             C#m
-Tecer-me a felicidade
-F#                      B       F#      B
-Em sorrisos de esplendor
-                        C#m
-És meu tesouro infinito
-D#                      G#m
-Juro-te eterna aliança
-Em                      Bm
-Porque sou tua esperança
-F#                      B
-Como és todo meu amor
-
-                                 Bm
-Alma gêmea de minha alma
-Em                      Bm
-Se eu te perder algum dia...
-G                       Bm
-Serei tua escura agonia
-F#                      Bm
-Da saudade dos teus véus...
-
-Se um dia me abandonares
-Em                              Bm
-Luz terna dos meus amores
-G                       Bm
-Hei de esperar-te, entre as flores
-F#                      B       F#      B
-Da claridade dos céus
-
-Repete Refrão.
-
-Final: C#m      F#      B       Em      Bm      F#     
- Bm      F#      B
+SE UM DIA ME ABANDONARES
+Em                 Bm
+LUZ TERNA DOS MEUS AMORES
+G                        Bm
+HEI DE ESPERAR-TE, ENTRE AS FLORES
+F#               B
+DA CLARIDADE DOS CÉUS

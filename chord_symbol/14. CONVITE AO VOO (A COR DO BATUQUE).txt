@@ -1,114 +1,25 @@
 [Intro]  G  C  D7  C  G
-
  G             C
-Volto o braço forte
-       G      C D7 C G
-Tenho ajuda
-         C          G    C D7 C G
-É a esperança renascer
-           C           G    C D7 C G
-Aprendi a não temer a morte
-            C           G    C D7 C G
-Eis a liberdade o conhecer
 
-G                C             G
-        Tenho asas longas pra vencer
-G                C             G
-        Tenho asas longas pra vencer
-G             C          G
-        A eternidade pra viver
-G             C          G
-        A eternidade pra viver
-G                C             G
-        Se você quiser me acompanhar
-G                C             A
-        Se você quiser me acompanhar
-                         D  D4 D
-A Abra as asas e vamos voar
+[2X]
 
-( G  C  D7  C  G )
+G             C
+VOLTO O BRAÇO FORTE
+      G
+TENHO AJUDA
+    C         G
+É A ESPERANÇA RENASCER
+          C           G
+APRENDI A NÃO TEMER A MORTE
+                C G
+EIS A LIBERDADE O CONHECER
 
-E
-Uma pipoooooca
-
-       E                   B7
-Uma pipoca estourando na panela
-                             E
-Outra pipoca querendo responder
-                      B7
-Aí então é aquele falatório
-                               E
-Que ninguém mais consegue entender
-
-             B                   E
-É um tal de ploc, plo ploc ploc ploc
-                B                  E
-Plo ploc ploc ploc, plo ploc ploc ploc
-
-E
-Duas pipooooocas
-
-       E                   B7
-Duas pipocas estourando na panela
-                             E
-Duas pipocas querendo responder
-                      B7
-Aí então é aquele falatório
-                               E
-Que ninguém mais consegue entender
-
-             B                   E
-É um tal de ploc, plo ploc ploc ploc
-                B                  E
-Plo ploc ploc ploc, plo ploc ploc ploc
-
-E
-Quatro pipooooocas
-
-       E                   B7
-Quatro pipocas estourando na panela
-                             E
-Quatro pipocas querendo responder
-                      B7
-Aí então é aquele falatório
-                               E
-Que ninguém mais consegue entender
-
-             B                   E
-É um tal de ploc, plo ploc ploc ploc
-                B                  E
-Plo ploc ploc ploc, plo ploc ploc ploc
-
-E
-Oito pipooooocas
-
-       E                   B7
-Oito pipocas estourando na panela
-                             E
-Oito pipocas querendo responder
-                      B7
-Aí então é aquele falatório
-                               E
-Que ninguém mais consegue entender
-
-             B                   E
-É um tal de ploc, plo ploc ploc ploc
-                B                  E
-Plo ploc ploc ploc, plo ploc ploc ploc
-
-E
-Todas as pipooooocas
-
-       E                   B7
-Todas pipocas estourando na panela
-                             E
-Todas pipocas querendo responder
-                      B7
-Aí então é aquele falatório
-                               E
-Que ninguém mais consegue entender
-
-             B                   E
-É um tal de ploc, plo ploc ploc ploc
-                B                  E
-Plo ploc ploc ploc, plo ploc ploc ploc
+[REFRÃO]
+G          C          G      G           C          G
+TENHO ASAS LONGAS PRA VENCER (TENHO ASAS LONGAS PRA VENCER)
+G C              G     G  C              G
+A ETERNIDADE PRA VIVER (A ETERNIDADE PRA VIVER)
+G       C         G          G        C         A
+SE VOCÊ QUISER ME ACOMPANHAR (SE VOCÊ QUISER ME ACOMPANHAR)
+                       D     D     D
+A ABRA AS ASAS E VAMOS VOAR, VOAR, VOAR.

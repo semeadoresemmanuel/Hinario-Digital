@@ -1,87 +1,80 @@
 [Intro] G  B7  C  Cm 
         G  A4/G  C  D4  G
+G                      B7
 
-G                      B7
-Em verdade eu vos digo
-             C         Cm
-Que se eles se calarem
-     G                A4/G
-As pedras é que falarão
-            C              D4
-Vossos velhos terão sonhos
-           C         D4    G
-Vossos jovens profetizarão
-G                      B7
-Em verdade eu vos digo
-             C         Cm
-Que se eles se calarem
-     G                A4/G
-As pedras é que falarão
-            C              D4
-Vossos velhos terão sonhos
-           C         D4    G
-Vossos jovens profetizarão
-Em               Bm
-Cajado de Moisés
-C                G
-O manto de Elias
-Em             Bm
-Escada de Jacó
-C                D7
-As visões de Jeremias
+[REFRÃO] [2X]
+G                 B7
+EM VERDADE EU VOS DIGO
+            C  Cm
+QUE SE ELES SE CALAREM
+   G            A4/G
+AS PEDRAS É QUE FALARÃO
+              C     D4
+VOSSOS VELHOS TERÃO SONHOS
+              G
+VOSSOS JOVENS PROFETIZARÃO
+
+Em        Bm
+CAJADO DE MOISÉS
+C          G
+O MANTO DE ELIAS
+Em        Bm
+ESCADA DE JACÓ
+C            D7
+AS VISÕES DE JEREMIAS
 G                    D
-Hoje médiuns, antes, profetas
-C               D7
-Faculdades não mais ocultas
+HOJE MÉDIUNS, ANTES, PROFETAS
+C              D7
+FACULDADES NÃO MAIS OCULTAS
+G                      D
+QUANTOS FALAM, QUANTOS SENTEM
+C                      D7
+QUANTOS OUVEM, QUANTAS LÍNGUAS
+
+[REFRÃO]
+G                 B7
+EM VERDADE EU VOS DIGO
+            C  Cm
+QUE SE ELES SE CALAREM
+   G            A4/G
+AS PEDRAS É QUE FALARÃO
+              C     D4
+VOSSOS VELHOS TERÃO SONHOS
+              G
+VOSSOS JOVENS PROFETIZARÃO
+
+Em           Bm
+NAS BODAS DE CANÁ
+C           G
+NA CURA DAS FERIDAS
+Em Bm
+NA TRANSFIGURAÇÃO
+C         C#m5-  D7
+NOS DANDO A ÁGUA VIVA
 G                     D
-Quantos falam, quantos sentem
-C                        D7    G  D7
-Quantos ouvem, quantas línguas
-         G             B7
-Em verdade eu vos digo
-             C         Cm
-Que se eles se calarem
-     G                  A4/G
-As pedras é que falarão
-            C              D4
-Vossos velhos terão sonhos
-           C         D4    G
-Vossos jovens profetizarão
-G                      B7
-Em verdade eu vos digo
-             C         Cm
-Que se eles se calarem
-     G                A4/G
-As pedras é que falarão
-            C                D4
-Vossos velhos terão sonhos
-           C         D4    G
-Vossos jovens profetizarão
-Em                  Bm
-Nas Bodas de Caná
-C                    G
-Na cura das feridas
-Em                Bm
-Na Transfiguração
-C       C#m5-         D7
-Nos dando a água viva
-G                         D
-Sempre Mestre, sempre Profeta
-C                D7
-Ser divino, Ser o Guia
-G                       D
-Quantos calam, quantos sentem
-C                        D7    G  D7
-Quantos ouvem o médium da Vida
-G                      B7
-Em verdade eu vos digo
-             C         Cm
-Que se eles se calarem
-     G                A4/G
-As pedras é que falarão
-            C              D4
-Vossos velhos terão sonhos
-           C         D4    G
-Vossos jovens profetizarão
+SEMPRE MESTRE, SEMPRE PROFETA
+C               D7
+SER DIVINO, SER O GUIA
+G                      D
+QUANTOS CALAM, QUANTOS SENTEM
+C                         D7
+QUANTOS OUVEM O MÉDIUM DA VIDA
+
+[REFRÃO]
+G                 B7
+EM VERDADE EU VOS DIGO
+            C  Cm
+QUE SE ELES SE CALAREM
+   G            A4/G
+AS PEDRAS É QUE FALARÃO
+              C     D4
+VOSSOS VELHOS TERÃO SONHOS
+              G
+VOSSOS JOVENS PROFETIZARÃO
+
+G                 B7
+EM VERDADE EU VOS DIGO
+            C  Cm
+QUE SE ELES SE CALAREM...
 
 ( G  A  C  D4 )

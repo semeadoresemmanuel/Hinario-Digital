@@ -1,46 +1,49 @@
 intro: F#m  D  A  E
-
     F#m              D
-Me perguntam de onde vem
-       A             E
-esse olhar firme e seguro
-       F#m         D
-quando tudo é desafio
-       A             E
-quando tudo é tão escuro
 
-      F#m            D
-as respostas que eu tenho
-     A                E
-se encontram neste mundo
-   F#m            D
-a certeza que eu sinto
-    A            E
-é o meu porto-seguro
+[2X]
 
-    F#m          D
-eu me cerco, eu vigio
-        A            E
-eu me importo, eu procuro
-    F#m        D
-persevero, acredito
-         A          E
-eu transformo este mundo
+   F#m               D
+ME PERGUNTAM DE ONDE VEM
+     A             E
+ESSE OLHAR FIRME E SEGURO
+       F#m    D
+QUANDO TUDO É DESAFIO
+       A          E
+QUANDO TUDO É TÃO ESCURO
 
-    F#m       D
-é na força do bem
-           A        E
-que eu me apego e caminho
-    F#m          D
-no poder que mantém
-        A        E
-meu coração protegido
+   F#m              D
+AS RESPOSTAS QUE EU TENHO
+   A               E
+SE ENCONTRAM NESTE MUNDO
+  F#m            D
+A CERTEZA QUE EU SINTO
+    A   E
+É O MEU PORTO-SEGURO
 
-         F#m    D
-e não há nada, nada
- A       E
-nada a temer
+   F#m          D
+EU ME CERCO, EU VIGIO
+      A           E
+EU ME IMPORTO, EU PROCURO
+F#m        D
+PERSEVERO, ACREDITO
+              A    E
+EU TRANSFORMO ESTE MUNDO
+
+[REFRÃO]
+     F#m      D
+É NA FORÇA DO BEM
+          A       E
+QUE EU ME APEGO E CAMINHO
+   F#m       D
+NO PODER QUE MANTÉM
+    A       E
+MEU CORAÇÃO PROTEGIDO
+         F#m   D
+E NÃO HÁ NADA, NADA
+A      E
+NADA A TEMER
      F#m        D
-pois a força do bem
-     A      E
-é o maior poder
+POIS A FORÇA DO BEM
+    A     E
+É O MAIOR PODER

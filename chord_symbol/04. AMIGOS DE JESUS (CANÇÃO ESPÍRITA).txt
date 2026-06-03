@@ -1,13 +1,18 @@
-INTRO E F#M G#M A B
-E F#M
+Intro: E F#m G#m A B7
+
+E                       F#m
 SE EU TE ENCONTRAR SOLITÁRIO PELA CIDADE
-BM E - A
+B7             A            E
 NÃO QUERO NEM SABER O SEU NOME, A SUA IDADE,
-E F#M
+E                       F#m
 AMIGO ASSIM TAMBÉM UM DIA ENCONTREI
-BM E - A
+B7             A           E
 FUI COM ELE ACERTAR, MINHA VIDA MELHORAR.
-E F#M G#M A B
+
+[REFRÃO]
+E              F#m
 SOY, SOY, SOY... AMIGO...
+G#m            A            B7
 SOY, SOY, SOY... ONDE ESTIVER... YEAH... YEAH...
+E
 PRA ONDE EU FOR.

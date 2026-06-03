@@ -1,76 +1,64 @@
-Intr.: G C A D C G/B  Am G
+[Intro]  G   C   A   D   C   Bm   Am   G
+G                          C
+QUAL DE NÓS NÃO TEM NENHUM DEFEITO?
+D               Eb°     Em
+QUAL DE NÓS NÃO TEM UMA VIRTUDE?
+G                      A
+PRECISAMOS SÓ ACHAR UM JEITO
+D                  G7
+DE SUAVIZAR O LADO RUDE
 
+                 C
+VAMOS AJUDAR-NOS MUTUAMENTE
+D          Eb°    Em
+E SOMAR AS NOSSAS QUALIDADES
+G                  A
+PRA FAZER UM MUNDO DIFERENTE
+D                  G7
+E TIRAR A FORÇA DA MALDADE
 
-G                             C
- Qual de nós não tem nenhum defeito?
-D                 D#º       Em
- Qual de nós não tem uma virtude?
-G                        A
- Precisamos só achar um jeito
-D                    G
- De suavizar o lado rude
+[REFRÃO]
+C                        G
+UM DIA TODOS NÓS SEREMOS ANJOS
+      B7        Em
+VAMOS TRABALHAR E ACREDITAR
+                          Em
+QUE NO FUTURO NÓS SEREMOS ANJOS
+   Am           Am/G
+NO PLANETA ONDE O AMOR
+D
+UNICAMENTE O AMOR
+      C         D     D7
+HÁ DE REINAR, E ASSIM SERÁ
 
-                      C
-Vamos ajudar-nos mutuamente
-D           D#º         Em
- E somar as nossas qualidades
-G                        A
- Pra fazer um mundo diferente
-D                      G    G7
- E tirar a força da maldade
+G               C
+A FELICIDADE SÓ COMEÇA
+D             Eb°Em
+QUANDO CESSAM AS DESIGUALDADES
+G                         A
+QUANDO TODOS COMPARTILHAM SONHOS
+D          D7    G7
+E NÃO USAM MAL A LIBERDADE
 
-C                         G
- Um dia todos nós seremos anjos
-       B7          Em
-Vamos trabalhar e acreditar
-C                          G       D/F# Em
- Que no futuro nós seremos anjos
-      Am
-No planeta onde o amor
-      D
-Unicamente o amor
-          G              D
-Há de reinar, e assim será
+                C
+O MESTRE FALOU: SEDE PERFEITO
+D                  Em
+E NOS ENSINOU ESSA LIÇÃO
+G                       A
+QUE SOMENTE O AMOR SERÁ ETERNO
+D           D7    G7
+NELE ESTÁ A NOSSA SALVAÇÃO
 
-G                   C
- A felicidade só começa
-D              D#º        Em
- Quando cessam as desigualdades
-G                           A
- Quando todos compartilham sonhos
-D                       G
- E não usam mal a liberdade
-
-G                         C
- O Mestre falou: Sede perfeito
-D          D#º         Em
- E nos ensinou essa lição
-G                          A
- Que somente o amor será eterno
-D                        G   G7
- Nele está a nossa salvação
-
-C                         G
- Um dia todos nós seremos anjos
-       B7          Em
-Vamos trabalhar e acreditar
-C                          G       D/F# Em
- Que no futuro nós seremos anjos
-      Am
-No planeta onde o amor
-      D
-Unicamente o amor
-          G    G7
-Há de reinar
-C                         G
- Um dia todos nós seremos anjos
-       B7          Em
-Vamos trabalhar e acreditar
-C                          G       D/F# Em
- Que no futuro nós seremos anjos
-      Am
-No planeta onde o amor
-      D
-Unicamente o amor
-             C G/B Am G F Em D C G
-...Há de reinar
+[REFRÃO] [2X]
+C                        G
+UM DIA TODOS NÓS SEREMOS ANJOS
+      B7        Em
+VAMOS TRABALHAR E ACREDITAR
+                          Em
+QUE NO FUTURO NÓS SEREMOS ANJOS
+   Am           Am/G
+NO PLANETA ONDE O AMOR
+D
+UNICAMENTE O AMOR
+      G7
+HÁ DE REINAR.
