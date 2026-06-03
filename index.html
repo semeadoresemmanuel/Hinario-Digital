@@ -7,9 +7,7 @@
     <title>Hinário Semeadores</title>
     <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
     <link rel="manifest" href="manifest.json">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+
     <style>
 @font-face {
     font-family: 'Montserrat-Black';
@@ -24,7 +22,7 @@
 :root {
     --primary: #F7F7F7;
     --secondary: #000000;
-    --accent: #00cc00; /* Standard Dark Mode Green */
+    --accent: #00cc00ff; /* Standard Dark Mode Green */
     --accent-glow: rgba(0, 204, 0, 0.4);
     --bg-color: #121212;
     --text-color: #F7F7F7;
@@ -40,7 +38,7 @@
     --card-bg: rgba(18, 18, 18, 0.05);
     --border-color: rgba(18, 18, 18, 0.1);
     --input-bg: rgba(18, 18, 18, 0.1);
-    --accent: #00cc00;
+    --accent: #00cc00ff;
 }
 
 [data-theme="light"] .listen-on-label,
@@ -50,7 +48,8 @@
 [data-theme="light"] #search-overlay .number-highlight,
 [data-theme="light"] #back-to-menu-btn,
 [data-theme="light"] #song-back-btn,
-[data-theme="light"] .chord {
+[data-theme="light"] .chord,
+[data-theme="light"] .marker-line {
     color: var(--accent) !important;
 }
 
@@ -63,16 +62,20 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Montserrat-Black', sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
 body {
     background-color: var(--bg-color) !important;
     color: var(--text-color);
+    font-family: 'Montserrat-Black', sans-serif;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+input, button, select, textarea {
+    font-family: inherit;
 }
 
 body.menu-active {
@@ -82,16 +85,12 @@ body.menu-active {
     width: 100%;
 }
 
-/* Base App Layout */
 .app-container {
     width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-}
-
-[data-theme="light"] .app-container {
-    background: #f7f7f7;
+    background-color: var(--bg-color);
 }
 
 /* Views Handling */
@@ -232,7 +231,7 @@ body.menu-active {
 }
 
 .listen-on-label {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: 0.72rem;
     font-weight: 700;
     color: var(--accent);
@@ -245,7 +244,7 @@ body.menu-active {
     width: 110px;
     margin-top: 6px;
     background: transparent;
-    border: 1px solid #00cc00;
+    border: 1px solid var(--accent);
     border-radius: 30px;
     height: 48px;
     display: flex;
@@ -261,7 +260,7 @@ body.menu-active {
     transform: translateX(-50%);
     width: 1px;
     height: 24px;
-    background-color: #00cc00;
+    background-color: var(--accent);
     z-index: 5;
     pointer-events: none;
 }
@@ -385,7 +384,7 @@ body.menu-active {
     position: absolute;
     left: 0; right: 0; top: 0; bottom: 0;
     padding: 12px 16px;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: 1.15rem;
     font-weight: 600;
     color: var(--text-color);
@@ -406,7 +405,7 @@ body.menu-active {
     background: transparent;
     color: transparent;
     caret-color: var(--text-color);
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: 1.15rem;
     font-weight: 600;
     outline: none;
@@ -425,7 +424,7 @@ body.menu-active {
     margin: 0;
 }
 .song-item {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: 0.95rem;
     padding: 16px 4px;
     border-bottom: 1px solid var(--border-color);
@@ -491,17 +490,13 @@ body.menu-active {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: #121212;
+    background-color: var(--bg-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 12px;
     margin: 0 -20px 24px -20px;
     transition: background 0.3s ease, padding 0.3s ease;
-}
-
-[data-theme="light"] .song-header-bar {
-    background-color: #F7F7F7;
 }
 
 .song-header-bar::after {
@@ -545,7 +540,7 @@ body.menu-active {
 }
 
 .song-header-bar h2 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: clamp(0.6rem, 3.5vw, 0.85rem) !important;
     font-weight: 700;
     width: 100%;
@@ -558,7 +553,7 @@ body.menu-active {
 }
 
 .song-header-bar h3 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: 0.65rem;
     font-weight: 700;
     text-align: center;
@@ -614,7 +609,7 @@ body.menu-active {
 }
 
 .font-adjust-label {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-weight: 900;
     color: var(--text-color);
     letter-spacing: 0.5px;
@@ -667,7 +662,7 @@ body.menu-active {
 }
 
 .chord-toggle-label {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Montserrat-Black', sans-serif;
     font-size: 0.8rem;
     font-weight: 900;
     color: var(--text-color);
@@ -733,9 +728,37 @@ body.menu-active {
     padding: 0;
 }
 
+.chord-line {
+    display: block;
+    line-height: 1.2;
+    margin-bottom: 0px;
+}
+
+.marker-line {
+    display: block;
+    color: var(--accent);
+    font-weight: 700;
+    font-family: 'Montserrat-Black', sans-serif;
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+.lyric-line {
+    display: block;
+    line-height: 1.4;
+    margin-bottom: 14px; /* spacing before next chord */
+}
+
+
+.empty-line {
+    display: block;
+    height: 16px; /* spacing between verses */
+}
+
 .chord, .lyric-marker {
     color: var(--accent);
     font-weight: 700;
+    font-family: 'Montserrat-Black', sans-serif;
 }
 .lyric-marker {
     color: var(--accent);
@@ -947,19 +970,25 @@ body.menu-active {
 
     <script type="module" src="app.js"></script>
     <script>
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            if ('serviceWorker' in navigator) {
+        if ('serviceWorker' in navigator) {
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 navigator.serviceWorker.getRegistrations().then(registrations => {
                     for (let registration of registrations) {
                         registration.unregister();
-                        console.log("Unregistered service worker on localhost to prevent development caching.");
                     }
                 });
+                if (window.caches) {
+                    caches.keys().then(names => {
+                        for (let name of names) {
+                            caches.delete(name);
+                        }
+                    });
+                }
+            } else {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js').catch(err => console.error(err));
+                });
             }
-        } else if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.error(err));
-            });
         }
     </script>
 </body>

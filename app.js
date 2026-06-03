@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial Font Size (Persistent)
     let currentFontSize = parseFloat(localStorage.getItem('lyricsFontSize')) || 0.75; // 12px initial
     let currentSong = null;
+    let chordsVisible = false;
 
     // Initialize Theme
     let currentTheme = localStorage.getItem('theme') || 'dark';
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Process valid songs from songs.js
-    const validSongs = songs.filter(s => s.title && s.content && s.title.trim().length > 1);
+    const validSongs = songs.filter(s => s.title && (s.lyrics || s.content) && s.title.trim().length > 1);
     validSongs.sort((a, b) => a.title.localeCompare(b.title));
 
     // Helper to remove accents for searching
@@ -74,7 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: song.title + (song.author ? ` (${song.author})` : ''), 
                 numStr: numStr,
                 originalText: `<span class="song-number">${numStr}.</span> ${cleanTitle}`, 
-                hybridSongObj: { title: cleanTitle, author: song.author, content: song.content },
+                hybridSongObj: { 
+                    title: cleanTitle, 
+                    author: song.author, 
+                    lyrics: song.lyrics, 
+                    chords: song.chords,
+                    content: song.content 
+                },
                 originalIndex: idx
             };
         });
@@ -147,14 +154,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const words = line.trim().split(/\s+/);
         if (words.length === 0 || line.trim() === '') return false;
         
-        // Matches standard chords, including alterations like 2, 4, 5, 6, 7, 9, 11, 13, sus, add, maj, dim, aug, etc.
-        const chordPattern = /^[(]?[A-G][b#]?(m|M|maj|min|dim|aug|sus|add|alt|[245679]|11|13)*(\/[A-G][b#]?[m]?)?[)]?$/;
+        // Matches standard and complex chords, including stacked/joined chords like E/G#Am
+        const chordUnitSource = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
+        const chordPattern = new RegExp('^(' + chordUnitSource + ')+$');
         let chordCount = 0;
         let specialCount = 0;
         
+        const specialTokens = [
+            '||:', ':||', '|', '...', '2x', '3x', '2X', '3X', '(2x)', '(3x)', '(2X)', '(3X)', 
+            '[2X]', '[2x]', '[3X]', '[3x]', '[REFRÃO]', '[refrão]', 'REFRÃO', '[INTRO]', 'INTRO',
+            '[SOLO]', 'SOLO', '[FIM]', 'FIM', '[PONTE]', 'PONTE', '1ª', '2ª', 'VEZ', 'VEZES', 'VOLTA'
+        ];
+        
         words.forEach(w => {
-            if (chordPattern.test(w)) chordCount++;
-            else if (['||:', ':||', '|', '...'].includes(w)) specialCount++;
+            const cleanW = w.replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g, "");
+            if (chordPattern.test(w) || chordPattern.test(cleanW)) {
+                chordCount++;
+            } else if (specialTokens.includes(w.toUpperCase()) || specialTokens.includes(cleanW.toUpperCase())) {
+                specialCount++;
+            }
         });
         
         const totalConsidered = chordCount + specialCount;
@@ -162,42 +180,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Process Lyrics to highlight chords and specific markers
-    function processLyrics(text) {
+    function processLyrics(text, isChordsSource) {
         const lines = text.split('\n');
         let processedLines = [];
         let lastWasEmpty = true; // start as true to skip leading empty lines
 
         lines.forEach((line) => {
-            const isChord = isChordLine(line);
+            const isChord = isChordsSource && isChordLine(line);
             
             if (isChord) {
-                if (chordsVisible) {
-                    const processedLine = line.replace(/\(2X\)|\[REFRÃO\]/g, '<span class="lyric-marker">$&</span>');
+                const words = line.trim().split(/\s+/);
+                const chordUnitSource = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
+                const chordPattern = new RegExp('^(' + chordUnitSource + ')+$');
+                
+                let hasActualChords = false;
+                words.forEach(w => {
+                    const cleanW = w.replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g, "");
+                    if (chordPattern.test(w) || chordPattern.test(cleanW)) {
+                        hasActualChords = true;
+                    }
+                });
+
+                const processedLine = line.replace(/\(2[Xx]\)|\(3[Xx]\)|\[REFRÃO\]|\[2[Xx]\]|\[3[Xx]\]/gi, '<span class="lyric-marker">$&</span>');
+                if (hasActualChords) {
                     processedLines.push(`<span class="chord-line chord">${processedLine}</span>`);
-                    lastWasEmpty = false;
+                } else {
+                    processedLines.push(`<span class="marker-line">${processedLine}</span>`);
                 }
-                // If chords are not visible, we completely skip this line
+                lastWasEmpty = false;
             } else {
                 const trimmedLine = line.trim();
                 if (trimmedLine === '') {
                     if (!lastWasEmpty) {
-                        processedLines.push('');
+                        processedLines.push(isChordsSource ? '<span class="empty-line"></span>' : '');
                         lastWasEmpty = true;
                     }
                 } else {
-                    const processedLine = trimmedLine.replace(/\(2X\)|\[REFRÃO\]/g, '<span class="lyric-marker">$&</span>');
-                    processedLines.push(processedLine);
+                    const processedLine = trimmedLine.replace(/\(2[Xx]\)|\(3[Xx]\)|\[REFRÃO\]|\[2[Xx]\]|\[3[Xx]\]/gi, '<span class="lyric-marker">$&</span>');
+                    processedLines.push(isChordsSource ? `<span class="lyric-line">${processedLine}</span>` : processedLine);
                     lastWasEmpty = false;
                 }
             }
         });
 
         // Trim any trailing empty lines in processedLines
-        while (processedLines.length > 0 && processedLines[processedLines.length - 1] === '') {
+        while (processedLines.length > 0 && (processedLines[processedLines.length - 1] === '' || processedLines[processedLines.length - 1] === '<span class="empty-line"></span>')) {
             processedLines.pop();
         }
 
-        return processedLines.join('\n');
+        return isChordsSource ? processedLines.join('') : processedLines.join('\n');
     }
 
     // Ensure titles fit in a single line by dynamically reducing font-size
@@ -313,7 +344,8 @@ document.addEventListener('DOMContentLoaded', () => {
             songAuthorEl.style.display = 'none';
         }
 
-        songContentEl.innerHTML = processLyrics(song.content); // Montserrat natively renders accents
+        const content = (chordsVisible ? song.chords : song.lyrics) || song.content || '';
+        songContentEl.innerHTML = processLyrics(content, chordsVisible); // Montserrat natively renders accents
         
         viewMenu.classList.remove('active');
         viewMenu.classList.add('hidden');
@@ -332,8 +364,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function resetChordsVisibility() {
+        chordsVisible = false;
+        if (toggleChordsSvgWrapper) {
+            toggleChordsSvgWrapper.classList.remove('chords-active');
+            toggleChordsSvgWrapper.classList.add('chords-inactive');
+        }
+        songContentEl.classList.add('no-chords');
+    }
+
     // Back to Menu
     function goBackToMenu() {
+        resetChordsVisibility();
         searchInput.blur();
         clearSearch();
         shouldClearOnNextFocus = true;
@@ -380,6 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
     backToMenuBtn.addEventListener('click', goBackToMenu);
     
     function closeSongView() {
+        resetChordsVisibility();
         viewSong.classList.remove('active');
         viewSong.classList.add('hidden');
         viewList.classList.remove('hidden');
@@ -412,8 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(fontDecreaseSvg) fontDecreaseSvg.addEventListener('click', shrinkFontLogic);
 
     // Toggle Chords
-    let chordsVisible = false;
-    
     const triggerChordToggle = () => {
         chordsVisible = !chordsVisible;
         if (chordsVisible) {
@@ -430,9 +471,10 @@ document.addEventListener('DOMContentLoaded', () => {
             songContentEl.classList.add('no-chords');
         }
         
-        // Re-process lyrics to collapse empty spaces when chords are hidden
+        // Re-process lyrics using the corresponding source
         if (currentSong) {
-            songContentEl.innerHTML = processLyrics(currentSong.content);
+            const content = (chordsVisible ? currentSong.chords : currentSong.lyrics) || currentSong.content || '';
+            songContentEl.innerHTML = processLyrics(content, chordsVisible);
         }
         
         updateFabBackBtnVisibility();
