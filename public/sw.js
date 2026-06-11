@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hinario-v62';
+const CACHE_NAME = 'hinario-v66';
 const urlsToCache = [
     './',
     './index.html',
@@ -6,7 +6,10 @@ const urlsToCache = [
     './songs.js',
     './manifest.json',
     './font/Montserrat-Black.ttf',
-    './font/Montserrat-Medium.ttf'
+    './font/Montserrat-Medium.ttf',
+    './favicon.svg',
+    './icon-192.png',
+    './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
