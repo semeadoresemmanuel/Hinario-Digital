@@ -1,4 +1,4 @@
-intro: F#m  D  A  E
+INTRO: F#m  D  A  E
     F#m              D
 
 [2X]

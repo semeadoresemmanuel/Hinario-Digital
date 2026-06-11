@@ -1,4 +1,4 @@
-Intro:  G  D/F#  Em  C  D7
+INTRO:  G  D/F#  Em  C  D7
 G             G7+   Em
 AMIGO, BRILHA O SOL ALÉM DE SUA JANELA
 C                      D4/7            D7
@@ -15,7 +15,7 @@ G        D/F#   Em                C
 DESPERTE PARA A LUZ, DEIXE O AMOR BROTAR
                   D7                 G
 FRUTIFICAR DE VEZ QUE A VIDA É MUITO MAIS
-        D/FEm          C
+        D/F#  Em          C
 DEPENDE DE VOCÊ QUERER ACREDITAR
              D7                 G
 QUE PODE SER FELIZ E, ENFIM, SE LIBERTAR
