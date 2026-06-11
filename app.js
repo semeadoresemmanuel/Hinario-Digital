@@ -1,5 +1,14 @@
 import songs from './songs.js';
 
+// Pre-compiled chord detection patterns for optimal performance
+const CHORD_UNIT_SOURCE = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
+const CHORD_PATTERN = new RegExp('^(' + CHORD_UNIT_SOURCE + ')+$');
+const SPECIAL_TOKENS = [
+    '||:', ':||', '|', '...', '2x', '3x', '2X', '3X', '(2x)', '(3x)', '(2X)', '(3X)', 
+    '[2X]', '[2x]', '[3X]', '[3x]', '[REFRÃO]', '[refrão]', 'REFRÃO', '[INTRO]', 'INTRO',
+    '[SOLO]', 'SOLO', '[FIM]', 'FIM', '[PONTE]', 'PONTE', '1ª', '2ª', 'VEZ', 'VEZES', 'VOLTA'
+];
+
 document.addEventListener('DOMContentLoaded', () => {
     // Menu elements
     const viewMenu = document.getElementById('view-menu');
@@ -55,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Process valid songs from songs.js
-    const validSongs = songs.filter(s => s.title && (s.lyrics || s.content) && s.title.trim().length > 1);
+    const validSongs = songs.filter(s => s.title && (s.lyrics || s.chords) && s.title.trim().length > 1);
     validSongs.sort((a, b) => a.title.localeCompare(b.title));
 
     // Helper to remove accents for searching
@@ -72,15 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const numStr = String(idx + 1).padStart(2, '0');
             const cleanTitle = song.title.toUpperCase();
             return { 
-                title: song.title + (song.author ? ` (${song.author})` : ''), 
                 numStr: numStr,
                 originalText: `<span class="song-number">${numStr}.</span> ${cleanTitle}`, 
                 hybridSongObj: { 
                     title: cleanTitle, 
                     author: song.author, 
                     lyrics: song.lyrics, 
-                    chords: song.chords,
-                    content: song.content 
+                    chords: song.chords
                 },
                 originalIndex: idx
             };
@@ -154,23 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const words = line.trim().split(/\s+/);
         if (words.length === 0 || line.trim() === '') return false;
         
-        // Matches standard and complex chords, including stacked/joined chords like E/G#Am
-        const chordUnitSource = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
-        const chordPattern = new RegExp('^(' + chordUnitSource + ')+$');
         let chordCount = 0;
         let specialCount = 0;
         
-        const specialTokens = [
-            '||:', ':||', '|', '...', '2x', '3x', '2X', '3X', '(2x)', '(3x)', '(2X)', '(3X)', 
-            '[2X]', '[2x]', '[3X]', '[3x]', '[REFRÃO]', '[refrão]', 'REFRÃO', '[INTRO]', 'INTRO',
-            '[SOLO]', 'SOLO', '[FIM]', 'FIM', '[PONTE]', 'PONTE', '1ª', '2ª', 'VEZ', 'VEZES', 'VOLTA'
-        ];
-        
         words.forEach(w => {
             const cleanW = w.replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g, "");
-            if (chordPattern.test(w) || chordPattern.test(cleanW)) {
+            if (CHORD_PATTERN.test(w) || CHORD_PATTERN.test(cleanW)) {
                 chordCount++;
-            } else if (specialTokens.includes(w.toUpperCase()) || specialTokens.includes(cleanW.toUpperCase())) {
+            } else if (SPECIAL_TOKENS.includes(w.toUpperCase()) || SPECIAL_TOKENS.includes(cleanW.toUpperCase())) {
                 specialCount++;
             }
         });
@@ -190,13 +188,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (isChord) {
                 const words = line.trim().split(/\s+/);
-                const chordUnitSource = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
-                const chordPattern = new RegExp('^(' + chordUnitSource + ')+$');
                 
                 let hasActualChords = false;
                 words.forEach(w => {
                     const cleanW = w.replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g, "");
-                    if (chordPattern.test(w) || chordPattern.test(cleanW)) {
+                    if (CHORD_PATTERN.test(w) || CHORD_PATTERN.test(cleanW)) {
                         hasActualChords = true;
                     }
                 });
@@ -344,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
             songAuthorEl.style.display = 'none';
         }
 
-        const content = (chordsVisible ? song.chords : song.lyrics) || song.content || '';
+        const content = (chordsVisible ? song.chords : song.lyrics) || '';
         songContentEl.innerHTML = processLyrics(content, chordsVisible); // Montserrat natively renders accents
         
         viewMenu.classList.remove('active');
@@ -473,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Re-process lyrics using the corresponding source
         if (currentSong) {
-            const content = (chordsVisible ? currentSong.chords : currentSong.lyrics) || currentSong.content || '';
+            const content = (chordsVisible ? currentSong.chords : currentSong.lyrics) || '';
             songContentEl.innerHTML = processLyrics(content, chordsVisible);
         }
         

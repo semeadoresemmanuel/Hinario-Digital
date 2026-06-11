@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#121212">
     <title>Hinário Semeadores</title>
-    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="manifest" href="manifest.json">
 
     <style>
@@ -295,23 +296,12 @@ body.menu-active {
 }
 
 @media (hover: hover) {
-    .player-layer-flex a:nth-child(1):hover {
+    .player-layer-flex a:hover {
         transform: scale(1.08);
         filter: drop-shadow(0 4px 10px var(--accent-glow));
     }
 }
-.player-layer-flex a.neon-active:nth-child(1) {
-    transform: scale(1.18) !important;
-    filter: drop-shadow(0 0 18px var(--accent)) brightness(1.4) !important;
-}
-
-@media (hover: hover) {
-    .player-layer-flex a:nth-child(2):hover {
-        transform: scale(1.08);
-        filter: drop-shadow(0 4px 10px var(--accent-glow));
-    }
-}
-.player-layer-flex a.neon-active:nth-child(2) {
+.player-layer-flex a.neon-active {
     transform: scale(1.18) !important;
     filter: drop-shadow(0 0 18px var(--accent)) brightness(1.4) !important;
 }

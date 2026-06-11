@@ -88,7 +88,6 @@ for (const path in lyricFiles) {
     title: title,
     lyrics: lyricsContent.trim(),
     chords: chordsContent.trim(),
-    content: chordsContent.trim(), // fallback
     author: author
   };
 }
