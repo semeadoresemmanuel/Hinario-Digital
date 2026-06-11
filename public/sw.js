@@ -1,12 +1,8 @@
-const CACHE_NAME = 'hinario-v66';
+const CACHE_NAME = 'hinario-v67';
 const urlsToCache = [
     './',
     './index.html',
-    './app.js',
-    './songs.js',
     './manifest.json',
-    './font/Montserrat-Black.ttf',
-    './font/Montserrat-Medium.ttf',
     './favicon.svg',
     './icon-192.png',
     './icon-512.png'
