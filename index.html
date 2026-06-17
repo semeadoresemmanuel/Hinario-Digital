@@ -147,8 +147,8 @@ body.menu-active {
     padding: 0 2px;
     box-sizing: border-box;
     cursor: pointer;
-    transition: border-color 500ms;
-    border: 2px solid #00cc00;
+    transition: border-color 500ms, background-color 500ms;
+    border: 2px solid transparent;
     background: transparent;
     outline: none;
     appearance: none;
@@ -170,12 +170,12 @@ body.menu-active {
     display: block;
 }
 [data-theme="dark"] .theme-btn-wrapper {
-    background-color: transparent;
-    border-color: #00cc00;
+    background-color: #202020;
+    border-color: transparent;
 }
 [data-theme="light"] .theme-btn-wrapper {
-    background-color: transparent;
-    border-color: #009C00;
+    background-color: #e0e0e0;
+    border-color: transparent;
 }
 [data-theme="dark"] .theme-btn-thumb {
     background-color: #00cc00ff;
@@ -190,11 +190,11 @@ body.menu-active {
 }
 [data-theme="dark"] .theme-btn-thumb .moon-icon {
     display: block;
-    color: #121212ff;
+    color: #202020;
 }
 [data-theme="light"] .theme-btn-thumb .sun-icon {
     display: block;
-    color: #F7F7F7;
+    color: #e0e0e0;
 }
 [data-theme="light"] .theme-btn-thumb .moon-icon {
     display: none;
@@ -865,9 +865,9 @@ body.menu-active {
         <!-- Main Menu -->
         <div id="view-menu" class="view active menu-view">
             <header class="top-bar">
-                <div class="title-logo-wrapper" id="title-img">
+                <h1 class="title-logo-wrapper" id="title-img">
                     <img src="elements/title.svg" alt="Hinário Semeadores" class="title-logo">
-                </div>
+                </h1>
                 <button id="theme-btn" class="theme-btn-wrapper clickable" aria-label="Alternar Tema" title="Alternar Tema">
                     <div class="theme-btn-thumb">
                         <!-- Sun Icon (Light Mode) -->

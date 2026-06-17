@@ -9,6 +9,10 @@ const SPECIAL_TOKENS = [
     '[SOLO]', 'SOLO', '[FIM]', 'FIM', '[PONTE]', 'PONTE', '1ª', '2ª', 'VEZ', 'VEZES', 'VOLTA'
 ];
 
+// Pre-compiled regex patterns for punctuation and lyric markers
+const PUNCTUATION_PATTERN = /^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g;
+const MARKER_PATTERN = /\([23]x\)|\[refrão\]|\[[23]x\]/gi;
+
 document.addEventListener('DOMContentLoaded', () => {
     // Menu elements
     const viewMenu = document.getElementById('view-menu');
@@ -165,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let specialCount = 0;
         
         words.forEach(w => {
-            const cleanW = w.replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g, "");
+            const cleanW = w.replace(PUNCTUATION_PATTERN, "");
             if (CHORD_PATTERN.test(w) || CHORD_PATTERN.test(cleanW)) {
                 chordCount++;
             } else if (SPECIAL_TOKENS.includes(w.toUpperCase()) || SPECIAL_TOKENS.includes(cleanW.toUpperCase())) {
@@ -191,13 +195,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 let hasActualChords = false;
                 words.forEach(w => {
-                    const cleanW = w.replace(/^[.,\/#!$%\^&\*;:{}=\-_`~()]+|[.,\/#!$%\^&\*;:{}=\-_`~()]+$/g, "");
+                    const cleanW = w.replace(PUNCTUATION_PATTERN, "");
                     if (CHORD_PATTERN.test(w) || CHORD_PATTERN.test(cleanW)) {
                         hasActualChords = true;
                     }
                 });
 
-                const processedLine = line.replace(/\(2[Xx]\)|\(3[Xx]\)|\[REFRÃO\]|\[2[Xx]\]|\[3[Xx]\]/gi, '<span class="lyric-marker">$&</span>');
+                const processedLine = line.replace(MARKER_PATTERN, '<span class="lyric-marker">$&</span>');
                 if (hasActualChords) {
                     processedLines.push(`<span class="chord-line chord">${processedLine}</span>`);
                 } else {
@@ -212,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         lastWasEmpty = true;
                     }
                 } else {
-                    const processedLine = trimmedLine.replace(/\(2[Xx]\)|\(3[Xx]\)|\[REFRÃO\]|\[2[Xx]\]|\[3[Xx]\]/gi, '<span class="lyric-marker">$&</span>');
+                    const processedLine = trimmedLine.replace(MARKER_PATTERN, '<span class="lyric-marker">$&</span>');
                     processedLines.push(isChordsSource ? `<span class="lyric-line">${processedLine}</span>` : processedLine);
                     lastWasEmpty = false;
                 }
