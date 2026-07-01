@@ -136,7 +136,7 @@ body.menu-active {
     padding: 0 2px;
     box-sizing: border-box;
     cursor: pointer;
-    transition: border-color 500ms, background-color 500ms;
+    transition: border-color 350ms, background-color 350ms;
     border: 2px solid transparent;
     background: transparent;
     outline: none;
@@ -150,13 +150,14 @@ body.menu-active {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1), background-color 300ms ease, box-shadow 300ms ease;
+    transition: transform 350ms cubic-bezier(0.4, 0.0, 0.2, 1), background-color 350ms ease, box-shadow 350ms ease;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 .theme-btn-thumb svg {
     width: 14px;
     height: 14px;
-    display: block;
+    position: absolute;
+    transition: opacity 350ms ease, transform 350ms ease;
 }
 [data-theme="dark"] .theme-btn-wrapper {
     background-color: #262626;
@@ -168,25 +169,31 @@ body.menu-active {
 }
 [data-theme="dark"] .theme-btn-thumb {
     background-color: #121212;
-    transform: translateX(26px);
+    transform: translateX(26px) rotate(360deg);
 }
 [data-theme="light"] .theme-btn-thumb {
     background-color: #F7F7F7;
-    transform: translateX(0);
+    transform: translateX(0) rotate(0deg);
 }
 [data-theme="dark"] .theme-btn-thumb .sun-icon {
-    display: none;
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
 }
 [data-theme="dark"] .theme-btn-thumb .moon-icon {
-    display: block;
+    opacity: 1;
+    transform: scale(1);
     color: #00cc00;
 }
 [data-theme="light"] .theme-btn-thumb .sun-icon {
-    display: block;
+    opacity: 1;
+    transform: scale(1);
     color: #009C00;
 }
 [data-theme="light"] .theme-btn-thumb .moon-icon {
-    display: none;
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
 }
 
 .center-content {
