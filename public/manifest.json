@@ -1,7 +1,7 @@
 {
-    "name": "Hinário Semeadores",
-    "short_name": "Semeadores",
-    "description": "Hinário para o grupo de jovens Semeadores",
+    "name": "Hinário Digital",
+    "short_name": "Hinário Digital",
+    "description": "Hinário Digital",
     "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#121212",
