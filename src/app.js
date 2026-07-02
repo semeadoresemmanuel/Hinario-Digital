@@ -28,13 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToMenuBtn = document.getElementById('back-to-menu-btn');
     const songBackBtn = document.getElementById('song-back-btn');
     const searchInput = document.getElementById('search-input');
+    const songHeaderBar = document.querySelector('.song-header-bar');
+    const listHeaderBar = document.querySelector('.list-header');
     const songsList = document.getElementById('songs-list');
     const songTitleEl = document.getElementById('song-title');
     const songAuthorEl = document.getElementById('song-author');
     const songContentEl = document.getElementById('song-content');
     const searchInputContainer = document.getElementById('search-input-container');
     const fabBackBtn = document.getElementById('fab-back-btn');
-    
+    const fabBackListBtn = document.getElementById('fab-back-list-btn');
+    const listContentEl = document.querySelector('.list-content');
+
+
     // SVG Controls Mode
     const fontDecreaseSvg = document.getElementById('font-decrease-svg');
     const fontIncreaseSvg = document.getElementById('font-increase-svg');
@@ -106,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.addEventListener('click', () => openSong(item.hybridSongObj));
                 songsList.appendChild(li);
             });
+            updateFabBackListBtnVisibility();
             return;
         }
 
@@ -158,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.addEventListener('click', () => openSong(match.item.hybridSongObj));
             songsList.appendChild(li);
         });
+        updateFabBackListBtnVisibility();
     }
 
     // Is it a chord line?
@@ -317,9 +324,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
     // Update bottom arrow opacity and transform transition dynamically on scroll
     function updateFadeInState() {
-        if (!isSongScrollable) return;
+        if (!isSongScrollable || !viewSong.classList.contains('active')) return;
         const currentScroll = window.scrollY;
         const triggerStart = maxScrollVal - 120; // Starts fading in 120px before the bottom
         
@@ -327,6 +335,45 @@ document.addEventListener('DOMContentLoaded', () => {
             fabBackBtn.classList.add('fade-in');
         } else {
             fabBackBtn.classList.remove('fade-in');
+        }
+    }
+
+    let isListScrollable = false;
+    let maxListScrollVal = 0;
+
+    // Toggle bottom back button visibility based on whether the list page is scrollable
+    function updateFabBackListBtnVisibility() {
+        if (!viewList.classList.contains('active')) return;
+        requestAnimationFrame(() => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+            
+            isListScrollable = documentHeight > windowHeight + 5;
+            
+            if (isListScrollable) {
+                fabBackListBtn.classList.add('visible');
+                // Calculate maxListScrollVal taking into account the space the button now occupies
+                const newScrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+                maxListScrollVal = newScrollHeight - windowHeight;
+                updateListFadeInState();
+            } else {
+                fabBackListBtn.classList.remove('visible');
+                fabBackListBtn.classList.remove('fade-in');
+                maxListScrollVal = 0;
+            }
+        });
+    }
+
+    // Update bottom arrow opacity and transform transition dynamically on list scroll
+    function updateListFadeInState() {
+        if (!isListScrollable || !viewList.classList.contains('active')) return;
+        const currentScroll = window.scrollY;
+        const triggerStart = maxListScrollVal - 120; // Starts fading in 120px before the bottom
+        
+        if (currentScroll >= triggerStart) {
+            fabBackListBtn.classList.add('fade-in');
+        } else {
+            fabBackListBtn.classList.remove('fade-in');
         }
     }
 
@@ -353,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewList.classList.add('hidden');
         viewSong.classList.remove('hidden');
         viewSong.classList.add('active');
+        if (songHeaderBar) songHeaderBar.classList.remove('header-hidden');
         document.body.classList.remove('menu-active');
         window.scrollTo(0, 0);
         // Agendamento da re-checagem de tamanho (permite tempo pra renderização sair de display: none)
@@ -397,11 +445,14 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInputContainer.style.display = 'none'; // hide search input when just listing all
         clearSearch();
         shouldClearOnNextFocus = true;
-        renderSongs();
         viewMenu.classList.remove('active');
         viewMenu.classList.add('hidden');
         viewList.classList.remove('hidden');
         viewList.classList.add('active');
+        if (listHeaderBar) listHeaderBar.classList.remove('header-hidden');
+
+        window.scrollTo(0, 0);
+        renderSongs();
     });
 
     searchSongsBtn.addEventListener('click', () => {
@@ -410,27 +461,36 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInputContainer.style.display = 'block';
         clearSearch();
         shouldClearOnNextFocus = true;
-        renderSongs();
         viewList.classList.add('search-centered');
         viewMenu.classList.remove('active');
         viewMenu.classList.add('hidden');
         viewList.classList.remove('hidden');
         viewList.classList.add('active');
+        if (listHeaderBar) listHeaderBar.classList.remove('header-hidden');
+
+        window.scrollTo(0, 0);
+        renderSongs();
         setTimeout(() => searchInput.focus(), 100);
     });
 
     backToMenuBtn.addEventListener('click', goBackToMenu);
     
-    function closeSongView() {
+
+        function closeSongView() {
         resetChordsVisibility();
         viewSong.classList.remove('active');
         viewSong.classList.add('hidden');
         viewList.classList.remove('hidden');
         viewList.classList.add('active');
+        if (listHeaderBar) listHeaderBar.classList.remove('header-hidden');
+        updateFabBackListBtnVisibility();
     }
     
     songBackBtn.addEventListener('click', closeSongView);
     fabBackBtn.addEventListener('click', closeSongView);
+    
+    fabBackListBtn.addEventListener('click', goBackToMenu);
+    listContentEl.addEventListener('scroll', updateListFadeInState);
 
     // Font Size Controls
     const enhanceFontLogic = () => {
@@ -558,18 +618,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Scroll Listener for Song Header Bar
-    const songHeaderBar = document.querySelector('.song-header-bar');
+    // Scroll Listener for Header Bars
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 0) {
-            if (songHeaderBar) songHeaderBar.classList.add('scrolled');
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > 10) {
+            if (songHeaderBar) {
+                songHeaderBar.classList.add('scrolled');
+                songHeaderBar.classList.add('header-hidden');
+            }
+            if (listHeaderBar) {
+                listHeaderBar.classList.add('scrolled');
+                listHeaderBar.classList.add('header-hidden');
+            }
         } else {
-            if (songHeaderBar) songHeaderBar.classList.remove('scrolled');
+            if (songHeaderBar) {
+                songHeaderBar.classList.remove('scrolled');
+                songHeaderBar.classList.remove('header-hidden');
+            }
+            if (listHeaderBar) {
+                listHeaderBar.classList.remove('scrolled');
+                listHeaderBar.classList.remove('header-hidden');
+            }
         }
+
         updateFadeInState();
+        updateListFadeInState();
     });
 
-    window.addEventListener('resize', updateFabBackBtnVisibility);
+    window.addEventListener('resize', () => {
+        updateFabBackBtnVisibility();
+        updateFabBackListBtnVisibility();
+    });
 
     // Initial Render fallback
     renderSongs();

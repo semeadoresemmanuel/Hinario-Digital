@@ -20,6 +20,7 @@
     --card-glass: blur(12px);
     --border-color: rgba(247, 247, 247, 0.2);
     --input-bg: rgba(247, 247, 247, 0.1);
+    --header-bg-scrolled: rgba(18, 18, 18, 0.8);
 }
 
 [data-theme="light"] {
@@ -29,6 +30,7 @@
     --border-color: rgba(18, 18, 18, 0.1);
     --input-bg: rgba(18, 18, 18, 0.1);
     --accent: #009C00;
+    --header-bg-scrolled: rgba(247, 247, 247, 0.8);
 }
 
 [data-theme="light"] .listen-on-label,
@@ -341,18 +343,36 @@ body.menu-active {
 
 /* List View */
 #view-list {
-    padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+    padding: max(12px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
     max-width: 900px;
     margin: 0 auto;
     width: 100%;
 }
 .list-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--bg-color);
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 4px;
-    margin-left: -6px;
-    transition: margin 0.3s ease;
+    padding: 2px 12px;
+    margin: 0 -20px 0 -20px;
+    transition: transform 0.3s ease, margin 0.3s ease, padding 0.3s ease, background-color 0.3s ease;
+}
+.list-header.scrolled {
+    padding: 2px 12px;
+}
+.list-header.scrolled, .song-header-bar.scrolled {
+    background-color: var(--header-bg-scrolled) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+.list-header.header-hidden, .song-header-bar.header-hidden {
+    transform: translateY(-100%);
+}
+#back-to-menu-btn {
+    color: var(--accent);
 }
 #view-list.search-centered .list-content {
     display: none;
@@ -408,7 +428,6 @@ body.menu-active {
 }
 .list-content {
     flex: 1;
-    overflow-y: auto;
 }
 .plain-list {
     list-style: none;
@@ -418,7 +437,7 @@ body.menu-active {
 .song-item {
     font-family: 'Montserrat-Black', sans-serif;
     font-size: 0.95rem;
-    padding: 16px 4px;
+    padding: 12px 4px;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: color 0.2s, opacity 0.2s;
@@ -467,7 +486,13 @@ body.menu-active {
     object-fit: contain;
 }
 #back-to-menu-btn, #song-back-btn {
+    width: 32px;
+    height: 32px;
     color: var(--accent);
+}
+#back-to-menu-btn img.back-icon, #song-back-btn img.back-icon {
+    width: 16px;
+    height: 16px;
 }
 
 /* Single Song View */
@@ -486,14 +511,14 @@ body.menu-active {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 12px;
+    padding: 4px 12px;
     margin: 0 -20px 24px -20px;
-    transition: background 0.3s ease, padding 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
 }
 
 .song-header-bar::after {
     content: '';
-    width: 40px;
+    width: 32px;
     flex-shrink: 0;
     transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
@@ -502,21 +527,8 @@ body.menu-active {
     width: 0;
 }
 
-#song-back-btn {
-    transition: opacity 0.2s ease, width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-    color: var(--accent);
-    overflow: hidden;
-}
-
 .song-header-bar.scrolled {
-    padding: 8px 12px;
-}
-
-.song-header-bar.scrolled #song-back-btn {
-    width: 0;
-    opacity: 0;
-    padding: 0;
-    pointer-events: none;
+    padding: 2px 12px;
 }
 
 .song-title-group {
@@ -759,7 +771,7 @@ body.menu-active {
     display: none;
 }
 
-#fab-back-btn {
+#fab-back-btn, #fab-back-list-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -790,10 +802,16 @@ body.menu-active {
 #fab-back-btn.visible {
     height: 40px;
     margin-top: 12px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
-#fab-back-btn.fade-in {
+#fab-back-list-btn.visible {
+    height: 40px;
+    margin-top: 6px;
+    margin-bottom: 0px;
+}
+
+#fab-back-btn.fade-in, #fab-back-list-btn.fade-in {
     opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
@@ -840,9 +858,7 @@ body.menu-active {
     .search-img-wrapper {
         margin-bottom: auto;
     }
-    .list-header {
-        margin-bottom: 8px;
-    }
+
     .song-item {
         padding: 12px 4px;
     }
