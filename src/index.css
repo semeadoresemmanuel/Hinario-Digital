@@ -765,9 +765,6 @@ body.no-scroll {
     opacity: 1;
 }
 
-.toggle-chords-wrapper.chords-active .chord-svg-icon {
-    filter: drop-shadow(0 0 2px var(--accent)) drop-shadow(0 0 2px var(--accent-glow));
-}
 
 .song-lyrics {
     font-family: 'Montserrat-SemiBold', sans-serif;
