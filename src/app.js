@@ -1,4 +1,4 @@
-import songs from './songs.js';
+import songs from './data/songs.js';
 
 // Pre-compiled chord detection patterns for optimal performance
 const CHORD_UNIT_SOURCE = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
@@ -45,13 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const fontIncreaseSvg = document.getElementById('font-increase-svg');
     const toggleChordsSvgWrapper = document.getElementById('toggle-chords-svg-wrapper');
     
-    // Initial Font Size (Persistent)
-    let currentFontSize = parseFloat(localStorage.getItem('lyricsFontSize')) || 0.75; // 12px initial
+    // Initial Font Size (Always starts at 12px/0.75rem)
+    let currentFontSize = 0.75;
     let currentSong = null;
     let chordsVisible = false;
 
     // Initialize Theme
-    let currentTheme = localStorage.getItem('theme') || 'dark';
+    let currentTheme = localStorage.getItem('theme') || 'light';
     setThemeElements(currentTheme);
 
     function setThemeElements(theme) {
@@ -309,9 +309,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // If content overflows the viewport, it is scrollable
             isSongScrollable = contentHeight > (windowHeight + 5);
-            
-            if (isSongScrollable) {
+                  if (isSongScrollable) {
                 fabBackBtn.classList.add('visible');
+                document.body.classList.remove('no-scroll');
                 // Calculate maxScrollVal taking into account the space the button now occupies
                 const newScrollHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
                 maxScrollVal = newScrollHeight - windowHeight;
@@ -319,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 fabBackBtn.classList.remove('visible');
                 fabBackBtn.classList.remove('fade-in');
+                document.body.classList.add('no-scroll');
                 maxScrollVal = 0;
             }
         });
@@ -382,6 +383,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!song) return; // safeguard
         currentSong = song;
         searchInput.blur();
+        
+        // Reset to minimum font size (12px / 0.75rem)
+        currentFontSize = 0.75;
+        songContentEl.style.fontSize = currentFontSize + 'rem';
+        
         songTitleEl.innerText = song.title; // Montserrat natively renders accents without HTML injection
         
         if (song.author) {
@@ -400,7 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
         viewList.classList.add('hidden');
         viewSong.classList.remove('hidden');
         viewSong.classList.add('active');
-        if (songHeaderBar) songHeaderBar.classList.remove('header-hidden');
         document.body.classList.remove('menu-active');
         window.scrollTo(0, 0);
         // Agendamento da re-checagem de tamanho (permite tempo pra renderização sair de display: none)
@@ -428,6 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearSearch();
         shouldClearOnNextFocus = true;
         document.body.classList.add('menu-active');
+        document.body.classList.remove('no-scroll');
         document.querySelectorAll('.neon-active').forEach(el => el.classList.remove('neon-active'));
         viewSong.classList.remove('active');
         viewSong.classList.add('hidden');
@@ -482,6 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewSong.classList.add('hidden');
         viewList.classList.remove('hidden');
         viewList.classList.add('active');
+        document.body.classList.remove('no-scroll');
         if (listHeaderBar) listHeaderBar.classList.remove('header-hidden');
         updateFabBackListBtnVisibility();
     }
@@ -497,7 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(currentFontSize < 2.5) {
             currentFontSize += 0.1;
             songContentEl.style.fontSize = currentFontSize + 'rem';
-            localStorage.setItem('lyricsFontSize', currentFontSize.toFixed(2));
             updateFabBackBtnVisibility();
         }
     };
@@ -506,7 +512,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(currentFontSize > 0.75) {
             currentFontSize -= 0.1;
             songContentEl.style.fontSize = currentFontSize + 'rem';
-            localStorage.setItem('lyricsFontSize', currentFontSize.toFixed(2));
             updateFabBackBtnVisibility();
         }
     };
