@@ -1,29 +1,27 @@
 {
-    "name": "Hinário Digital",
-    "short_name": "Hinário Digital",
-    "description": "Hinário Digital",
-    "start_url": "./index.html",
-    "display": "standalone",
-    "background_color": "#121212",
-    "theme_color": "#121212",
-    "icons": [
-        {
-            "src": "favicon.svg",
-            "sizes": "any",
-            "type": "image/svg+xml",
-            "purpose": "any"
-        },
-        {
-            "src": "icon-192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
-        },
-        {
-            "src": "icon-512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-    ]
+  "name": "Caixa de Sugestões",
+  "short_name": "Sugestões",
+  "description": "Caixa de Sugestões Anónima",
+  "theme_color": "#002400",
+  "background_color": "#002400",
+  "start_url": "/",
+  "id": "/",
+  "dir": "ltr",
+  "lang": "pt-BR",
+  "orientation": "portrait",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
