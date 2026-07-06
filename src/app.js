@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reportedBugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
         
         if (reportedBugs.length === 0) {
-            bugsModalList.innerHTML = '<div class="no-bugs-msg">Nenhum bug reportado no momento.</div>';
+            bugsModalList.innerHTML = '<div class="no-bugs-msg">Nenhum erro encontrado no momento.</div>';
             if (bugsClearAllBtn) bugsClearAllBtn.style.display = 'none';
             return;
         }
