@@ -9,6 +9,11 @@
     src: url('./assets/font/Montserrat/Montserrat-SemiBold.ttf') format('truetype');
 }
 
+@font-face {
+    font-family: 'Montserrat-Italic';
+    src: url('./assets/font/Montserrat/Montserrat-Italic.ttf') format('truetype');
+}
+
 :root {
     --primary: #F7F7F7;
     --secondary: #000000;
@@ -21,6 +26,8 @@
     --border-color: rgba(247, 247, 247, 0.2);
     --input-bg: rgba(247, 247, 247, 0.1);
     --header-bg-scrolled: rgba(18, 18, 18, 0.8);
+    --modal-bg: #1A1A1A;
+    --modal-border: #2A2A2A;
 }
 
 [data-theme="light"] {
@@ -31,6 +38,8 @@
     --input-bg: rgba(18, 18, 18, 0.1);
     --accent: #009C00;
     --header-bg-scrolled: rgba(247, 247, 247, 0.8);
+    --modal-bg: #FFFFFF;
+    --modal-border: #E3E3E3;
 }
 
 [data-theme="light"] .listen-on-label,
@@ -50,6 +59,8 @@
 }
 
 [data-theme="light"] .back-icon,
+[data-theme="light"] .bug-icon,
+[data-theme="light"] .report-messages-icon,
 [data-theme="light"] .musical-note-img,
 [data-theme="light"] .search-img,
 [data-theme="light"] .title-logo,
@@ -831,6 +842,7 @@ body.no-scroll {
     
     /* Layout properties (collapsed by default) */
     height: 0;
+    width: 0;
     margin-top: 0;
     margin-bottom: 0;
     overflow: hidden;
@@ -843,22 +855,81 @@ body.no-scroll {
     /* Transition opacity/transform for fade-in, and hover filter */
     transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                 transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                 filter 0.2s ease;
 }
 
-#fab-back-btn.visible {
+#fab-back-btn.visible, #fab-back-list-btn.visible {
     height: 40px;
-    margin-top: 12px;
-    margin-bottom: 30px;
+    width: 40px;
+}
+
+#fab-back-btn.visible {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #fab-back-list-btn.visible {
-    height: 40px;
     margin-top: 6px;
     margin-bottom: 0px;
 }
 
 #fab-back-btn.fade-in, #fab-back-list-btn.fade-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Song View Footer and Bug Button */
+.song-footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 40px;
+    margin-top: 12px;
+    margin-bottom: 30px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.song-footer-container:has(#fab-back-btn.visible) {
+    justify-content: space-between;
+}
+
+.icon-btn img.bug-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+#report-bug-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+    margin-right: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.2s ease;
+}
+
+.song-footer-container:has(#fab-back-btn.visible) #report-bug-btn {
+    margin-right: -8px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+    pointer-events: none;
+}
+
+.song-footer-container:has(#fab-back-btn.fade-in) #report-bug-btn {
     opacity: 1;
     transform: translateY(0) scale(1);
     pointer-events: auto;
@@ -916,4 +987,268 @@ body.no-scroll {
         margin-top: 0px;
         margin-bottom: 20px;
     }
+}
+
+/* Bug Report Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: var(--modal-bg);
+    border: 1.2px solid var(--modal-border);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 380px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.modal-header {
+    font-family: 'Montserrat-Black', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin: 0;
+    text-align: center;
+}
+
+#bug-description {
+    width: 100%;
+    height: 140px;
+    background: transparent;
+    border: 1.2px solid var(--modal-border);
+    border-radius: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-color);
+    resize: none;
+    outline: none;
+    transition: border-color 0.25s ease;
+}
+
+#bug-description:focus {
+    border-color: var(--accent) !important;
+}
+
+#bug-description::placeholder {
+    color: var(--text-color);
+    opacity: 0.45;
+    font-family: 'Montserrat-Italic', sans-serif;
+    font-size: 0.78rem;
+    text-align: left;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.modal-btn {
+    height: 38px;
+    flex: 1;
+    border-radius: 20px;
+    font-family: 'Montserrat-Black', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.modal-btn.cancel {
+    background: transparent;
+    border: 1.2px solid var(--modal-border);
+    color: var(--text-color);
+}
+
+.modal-btn.submit {
+    background: var(--accent);
+    border: none;
+    color: #ffffff;
+}
+
+@media (hover: hover) {
+    .modal-btn:hover {
+        transform: scale(1.03);
+    }
+    .modal-btn.cancel:hover {
+        background: rgba(128, 128, 128, 0.05);
+    }
+    .modal-btn.submit:hover {
+        filter: brightness(1.05);
+        box-shadow: 0 4px 12px var(--accent-glow);
+    }
+}
+
+.modal-btn:active {
+    transform: scale(0.97);
+}
+
+/* Header Controls & Bug messages button */
+.top-bar-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#report-messages-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.icon-btn img.report-messages-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+/* Bugs List Modal Styling */
+.bugs-modal-content {
+    max-width: 420px;
+    max-height: 80vh;
+}
+
+.bugs-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 45vh;
+    padding-right: 4px;
+}
+
+/* Custom scrollbar for bugs list wrapper */
+.bugs-list-wrapper::-webkit-scrollbar {
+    width: 4px;
+}
+.bugs-list-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+.bugs-list-wrapper::-webkit-scrollbar-thumb {
+    background: var(--modal-border);
+    border-radius: 2px;
+}
+
+.bug-report-item {
+    background: var(--input-bg);
+    border: 1.2px solid var(--modal-border);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+    text-align: left;
+}
+
+.bug-report-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.bug-report-item-title {
+    font-family: 'Montserrat-Black', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.bug-report-item-date {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 0.65rem;
+    opacity: 0.5;
+}
+
+.bug-report-item-desc {
+    font-family: 'Montserrat-Italic', sans-serif;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    word-break: break-word;
+    margin: 0;
+    color: var(--text-color);
+}
+
+.bug-report-item-delete {
+    align-self: flex-end;
+    background: transparent;
+    border: none;
+    color: #ff3333;
+    font-family: 'Montserrat-Black', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 900;
+    cursor: pointer;
+    padding: 4px 0 0 0;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bug-report-item-delete:hover {
+    opacity: 0.8;
+}
+
+.no-bugs-msg {
+    font-family: 'Montserrat-Italic', sans-serif;
+    font-size: 0.8rem;
+    text-align: center;
+    opacity: 0.5;
+    padding: 24px 0;
+    color: var(--text-color);
 }

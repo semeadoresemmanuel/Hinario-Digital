@@ -496,6 +496,140 @@ document.addEventListener('DOMContentLoaded', () => {
     songBackBtn.addEventListener('click', closeSongView);
     fabBackBtn.addEventListener('click', closeSongView);
     
+    const bugReportModal = document.getElementById('bug-report-modal');
+    const bugDescription = document.getElementById('bug-description');
+    const bugCancelBtn = document.getElementById('bug-cancel-btn');
+    const bugSubmitBtn = document.getElementById('bug-submit-btn');
+    const reportBugBtn = document.getElementById('report-bug-btn');
+
+    if (reportBugBtn && bugReportModal) {
+        reportBugBtn.addEventListener('click', (e) => {
+            bugDescription.value = ''; // Reset input
+            bugReportModal.classList.add('active');
+            // Timeout to allow bounce transform to finish before focusing
+            setTimeout(() => {
+                bugDescription.focus();
+            }, 250);
+        });
+    }
+
+    if (bugCancelBtn && bugReportModal) {
+        bugCancelBtn.addEventListener('click', () => {
+            bugReportModal.classList.remove('active');
+        });
+    }
+
+    // Also close modal when clicking outside content
+    if (bugReportModal) {
+        bugReportModal.addEventListener('click', (e) => {
+            if (e.target === bugReportModal) {
+                bugReportModal.classList.remove('active');
+            }
+        });
+    }
+
+    if (bugSubmitBtn && bugReportModal && bugDescription) {
+        bugSubmitBtn.addEventListener('click', () => {
+            const text = bugDescription.value.trim();
+            if (!text) {
+                alert('Por favor, descreva o erro antes de enviar.');
+                return;
+            }
+            
+            const songTitle = document.getElementById('song-title').innerText;
+            const songAuthor = document.getElementById('song-author').innerText || 'Desconhecido';
+            
+            // Catalog/Save the bug locally
+            const reportedBugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
+            reportedBugs.push({
+                song: songTitle,
+                author: songAuthor,
+                description: text,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+            localStorage.setItem('reportedBugs', JSON.stringify(reportedBugs));
+            
+            const subject = encodeURIComponent(`Hinário Digital - Erro na música: ${songTitle}`);
+            const body = encodeURIComponent(`Olá,\n\nGostaria de relatar o seguinte erro na música "${songTitle}" (Artista/Grupo: ${songAuthor}):\n\n${text}\n\n`);
+            
+            window.location.href = `mailto:suporte@hinariodigital.com?subject=${subject}&body=${body}`;
+            bugReportModal.classList.remove('active');
+        });
+    }
+
+    // Bugs List Modal Logic
+    const bugsListModal = document.getElementById('bugs-list-modal');
+    const bugsModalList = document.getElementById('bugs-modal-list');
+    const bugsClearAllBtn = document.getElementById('bugs-clear-all-btn');
+    const bugsCloseBtn = document.getElementById('bugs-close-btn');
+    const reportMessagesBtn = document.getElementById('report-messages-btn');
+
+    function renderBugsList() {
+        if (!bugsModalList) return;
+        const reportedBugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
+        
+        if (reportedBugs.length === 0) {
+            bugsModalList.innerHTML = '<div class="no-bugs-msg">Nenhum bug reportado no momento.</div>';
+            if (bugsClearAllBtn) bugsClearAllBtn.style.display = 'none';
+            return;
+        }
+
+        if (bugsClearAllBtn) bugsClearAllBtn.style.display = 'flex';
+        
+        bugsModalList.innerHTML = reportedBugs.map((bug, index) => `
+            <div class="bug-report-item">
+                <div class="bug-report-item-header">
+                    <h4 class="bug-report-item-title">${bug.song}</h4>
+                    <span class="bug-report-item-date">${bug.date}</span>
+                </div>
+                <p class="bug-report-item-desc">${bug.description}</p>
+                <button class="bug-report-item-delete" data-index="${index}">RESOLVIDO</button>
+            </div>
+        `).join('');
+
+        // Add delete listener to each button
+        bugsModalList.querySelectorAll('.bug-report-item-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = parseInt(e.target.getAttribute('data-index'));
+                const bugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
+                bugs.splice(index, 1);
+                localStorage.setItem('reportedBugs', JSON.stringify(bugs));
+                renderBugsList();
+            });
+        });
+    }
+
+    if (reportMessagesBtn && bugsListModal) {
+        reportMessagesBtn.addEventListener('click', () => {
+            renderBugsList();
+            bugsListModal.classList.add('active');
+        });
+    }
+
+    if (bugsCloseBtn && bugsListModal) {
+        bugsCloseBtn.addEventListener('click', () => {
+            bugsListModal.classList.remove('active');
+        });
+    }
+
+    if (bugsClearAllBtn && bugsListModal) {
+        bugsClearAllBtn.addEventListener('click', () => {
+            if (confirm('Deseja realmente limpar todo o histórico de erros reportados?')) {
+                localStorage.removeItem('reportedBugs');
+                renderBugsList();
+            }
+        });
+    }
+
+    // Close modal when clicking outside content
+    if (bugsListModal) {
+        bugsListModal.addEventListener('click', (e) => {
+            if (e.target === bugsListModal) {
+                bugsListModal.classList.remove('active');
+            }
+        });
+    }
+    
     fabBackListBtn.addEventListener('click', goBackToMenu);
     listContentEl.addEventListener('scroll', updateListFadeInState);
 
@@ -608,8 +742,8 @@ document.addEventListener('DOMContentLoaded', () => {
         searchOverlay.scrollLeft = searchInput.scrollLeft;
     });
 
-    // Remove Neon ativo após 200ms nos botões do Menu e Players para retorno rápido (era 300ms)
-    document.querySelectorAll('.flex-btn, #theme-btn, #list-songs-btn, #search-songs-btn').forEach(btn => {
+    // Remove Neon ativo após 200ms nos botões do Menu, Players e Mensagens para retorno rápido (era 300ms)
+    document.querySelectorAll('.flex-btn, #theme-btn, #report-messages-btn, #list-songs-btn, #search-songs-btn').forEach(btn => {
         // Intercepta qualquer forma de click/pressão pra garantir em todos os dipositivos
         btn.addEventListener('mousedown', () => activateNeon(btn));
         btn.addEventListener('touchstart', () => activateNeon(btn), {passive: true});
