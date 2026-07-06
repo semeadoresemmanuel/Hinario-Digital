@@ -1135,7 +1135,7 @@ body.no-scroll {
 }
 
 #report-messages-btn {
-    width: 34px;
+    width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
@@ -1149,8 +1149,8 @@ body.no-scroll {
 }
 
 .icon-btn img.report-messages-icon {
-    width: 34px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
 }
 
