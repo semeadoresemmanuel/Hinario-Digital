@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hinario-v67';
+const CACHE_NAME = 'hinario-v70';
 const urlsToCache = [
     './',
     './index.html',
