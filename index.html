@@ -19,26 +19,31 @@
                 <h1 class="title-logo-wrapper" id="title-img">
                     <img src="src/assets/elements/title.svg" alt="Hinário Digital" class="title-logo">
                 </h1>
-                <button id="theme-btn" class="theme-btn-wrapper clickable" aria-label="Alternar Tema" title="Alternar Tema">
-                    <div class="theme-btn-thumb">
-                        <!-- Sun Icon (Light Mode) -->
-                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="4" fill="currentColor"/>
-                            <path d="M12 2v2"/>
-                            <path d="M12 20v2"/>
-                            <path d="m4.93 4.93 1.41 1.41"/>
-                            <path d="m17.66 17.66 1.41 1.41"/>
-                            <path d="M2 12h2"/>
-                            <path d="M20 12h2"/>
-                            <path d="m6.34 17.66-1.41 1.41"/>
-                            <path d="m19.07 4.93-1.41 1.41"/>
-                        </svg>
-                        <!-- Moon Icon (Dark Mode) -->
-                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-                        </svg>
-                    </div>
-                </button>
+                <div class="top-bar-controls">
+                    <button id="theme-btn" class="theme-btn-wrapper clickable" aria-label="Alternar Tema" title="Alternar Tema">
+                        <div class="theme-btn-thumb">
+                            <!-- Sun Icon (Light Mode) -->
+                            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                                <path d="M12 2v2"/>
+                                <path d="M12 20v2"/>
+                                <path d="m4.93 4.93 1.41 1.41"/>
+                                <path d="m17.66 17.66 1.41 1.41"/>
+                                <path d="M2 12h2"/>
+                                <path d="M20 12h2"/>
+                                <path d="m6.34 17.66-1.41 1.41"/>
+                                <path d="m19.07 4.93-1.41 1.41"/>
+                            </svg>
+                            <!-- Moon Icon (Dark Mode) -->
+                            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                            </svg>
+                        </div>
+                    </button>
+                    <button id="report-messages-btn" class="icon-btn hover-scale" aria-label="Mensagens de Erro" title="Bugs Reportados">
+                        <img src="src/assets/elements/report_messages.svg" alt="Bugs Reportados" class="report-messages-icon">
+                    </button>
+                </div>
             </header>
 
             <main class="center-content">
@@ -160,9 +165,40 @@
             </div>
             <pre id="song-content" class="song-lyrics no-chords"></pre>
             
-            <button id="fab-back-btn" class="icon-btn hover-scale" aria-label="Voltar para a lista" title="Voltar">
-                <img src="src/assets/elements/back.svg" alt="Voltar" class="back-icon">
-            </button>
+            <div class="song-footer-container">
+                <button id="fab-back-btn" class="icon-btn hover-scale" aria-label="Voltar para a lista" title="Voltar">
+                    <img src="src/assets/elements/back.svg" alt="Voltar" class="back-icon">
+                </button>
+                <button id="report-bug-btn" class="icon-btn hover-scale" aria-label="Reportar bug" title="Reportar Bug">
+                    <img src="src/assets/elements/report_a_bug.svg" alt="Reportar Bug" class="bug-icon">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bug Report Modal -->
+    <div id="bug-report-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-header">O QUE HÁ DE ERRADO?</h3>
+            <textarea id="bug-description" placeholder="Descreva o erro identificado" spellcheck="false" autocomplete="off"></textarea>
+            <div class="modal-buttons">
+                <button id="bug-cancel-btn" class="modal-btn cancel">CANCELAR</button>
+                <button id="bug-submit-btn" class="modal-btn submit">ENVIAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bugs List Modal -->
+    <div id="bugs-list-modal" class="modal-overlay">
+        <div class="modal-content bugs-modal-content">
+            <h3 class="modal-header">BUGS REPORTADOS</h3>
+            <div id="bugs-modal-list" class="bugs-list-wrapper">
+                <!-- Injected via JS -->
+            </div>
+            <div class="modal-buttons">
+                <button id="bugs-clear-all-btn" class="modal-btn cancel">LIMPAR TUDO</button>
+                <button id="bugs-close-btn" class="modal-btn submit">FECHAR</button>
+            </div>
         </div>
     </div>
 
