@@ -40,8 +40,8 @@
                             </svg>
                         </div>
                     </button>
-                    <button id="report-messages-btn" class="icon-btn hover-scale" aria-label="Mensagens de Erro" title="Bugs Reportados">
-                        <img src="src/assets/elements/report_messages.svg" alt="Bugs Reportados" class="report-messages-icon">
+                    <button id="report-messages-btn" class="icon-btn hover-scale" aria-label="Mensagens de Erro" title="Alerta de Erros">
+                        <img src="src/assets/elements/report_messages.svg" alt="Alerta de Erros" class="report-messages-icon">
                     </button>
                 </div>
             </header>
@@ -180,7 +180,7 @@
     <div id="bug-report-modal" class="modal-overlay">
         <div class="modal-content">
             <h3 class="modal-header">O QUE HÁ DE ERRADO?</h3>
-            <textarea id="bug-description" placeholder="Descreva o erro identificado" spellcheck="false" autocomplete="off"></textarea>
+            <textarea id="bug-description" placeholder="Descreva o(s) erro(s) identificado(s)" spellcheck="false" autocomplete="off"></textarea>
             <div class="modal-buttons">
                 <button id="bug-cancel-btn" class="modal-btn cancel">CANCELAR</button>
                 <button id="bug-submit-btn" class="modal-btn submit">ENVIAR</button>
@@ -191,7 +191,7 @@
     <!-- Bugs List Modal -->
     <div id="bugs-list-modal" class="modal-overlay">
         <div class="modal-content bugs-modal-content">
-            <h3 class="modal-header">BUGS REPORTADOS</h3>
+            <h3 class="modal-header">ALERTA DE ERROS</h3>
             <div id="bugs-modal-list" class="bugs-list-wrapper">
                 <!-- Injected via JS -->
             </div>
