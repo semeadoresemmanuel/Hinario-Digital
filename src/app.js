@@ -61,6 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (metaThemeColor) {
             metaThemeColor.setAttribute('content', theme === 'dark' ? '#121212' : '#f7f7f7');
         }
+
+        const themeLabel = document.getElementById('theme-label');
+        if (themeLabel) {
+            themeLabel.innerText = theme === 'dark' ? 'TEMA ESCURO' : 'TEMA CLARO';
+        }
     }
 
     // Apply persistent font size on startup
@@ -600,9 +605,143 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (reportMessagesBtn && bugsListModal) {
+        let isUnlocked = false;
+        const errorIcon = reportMessagesBtn.querySelector('.report-messages-icon');
+
+        if (errorIcon) {
+            errorIcon.src = 'src/assets/elements/closed_eye.svg';
+        }
+
+        const passwordPromptModal = document.getElementById('password-prompt-modal');
+        const passwordInput = document.getElementById('prompt-password-input');
+        const cancelBtn = document.getElementById('prompt-cancel-btn');
+        const submitBtn = document.getElementById('prompt-submit-btn');
+        const errorMsg = document.getElementById('prompt-error-msg');
+        const toggleVisibilityBtn = document.getElementById('toggle-password-visibility-btn');
+        const visibilityOff = document.getElementById('password-visibility-off');
+        const visibilityOn = document.getElementById('password-visibility-on');
+
+        const closePasswordModal = () => {
+            if (passwordPromptModal) {
+                passwordPromptModal.classList.remove('active');
+            }
+            if (passwordInput) {
+                passwordInput.value = '';
+                passwordInput.type = 'password';
+            }
+            if (visibilityOff && visibilityOn) {
+                visibilityOff.classList.remove('hidden');
+                visibilityOn.classList.add('hidden');
+            }
+            if (errorMsg) {
+                errorMsg.classList.add('hidden');
+            }
+        };
+
+        const tryUnlock = () => {
+            if (!passwordInput) return;
+            const pwd = passwordInput.value;
+            if (pwd === 'admsemeadores*') {
+                isUnlocked = true;
+                if (errorIcon) {
+                    errorIcon.src = 'src/assets/elements/eye.svg';
+                }
+                closePasswordModal();
+                renderBugsList();
+                bugsListModal.classList.add('active');
+            } else {
+                if (errorMsg) {
+                    errorMsg.classList.remove('hidden');
+                    // Reset animation trigger
+                    errorMsg.style.animation = 'none';
+                    errorMsg.offsetHeight; /* trigger reflow */
+                    errorMsg.style.animation = null;
+                }
+                passwordInput.select();
+            }
+        };
+
         reportMessagesBtn.addEventListener('click', () => {
-            renderBugsList();
-            bugsListModal.classList.add('active');
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsDropdown = document.getElementById('settings-dropdown');
+            if (settingsBtn && settingsDropdown) {
+                settingsBtn.classList.remove('active');
+                settingsDropdown.classList.remove('active');
+            }
+
+            if (!isUnlocked) {
+                if (passwordPromptModal && passwordInput) {
+                    passwordInput.value = '';
+                    passwordInput.type = 'password';
+                    if (visibilityOff && visibilityOn) {
+                        visibilityOff.classList.remove('hidden');
+                        visibilityOn.classList.add('hidden');
+                    }
+                    if (errorMsg) errorMsg.classList.add('hidden');
+                    passwordPromptModal.classList.add('active');
+                    setTimeout(() => {
+                        passwordInput.focus();
+                    }, 100);
+                }
+            } else {
+                renderBugsList();
+                bugsListModal.classList.add('active');
+            }
+        });
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', closePasswordModal);
+        }
+
+        if (submitBtn) {
+            submitBtn.addEventListener('click', tryUnlock);
+        }
+
+        if (toggleVisibilityBtn && passwordInput && visibilityOff && visibilityOn) {
+            toggleVisibilityBtn.addEventListener('click', () => {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    visibilityOff.classList.add('hidden');
+                    visibilityOn.classList.remove('hidden');
+                } else {
+                    passwordInput.type = 'password';
+                    visibilityOff.classList.remove('hidden');
+                    visibilityOn.classList.add('hidden');
+                }
+                passwordInput.focus();
+            });
+        }
+
+        if (passwordInput) {
+            passwordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    tryUnlock();
+                }
+            });
+            passwordInput.addEventListener('input', () => {
+                if (errorMsg) {
+                    errorMsg.classList.add('hidden');
+                }
+            });
+        }
+    }
+
+    // Settings Dropdown Logic
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsDropdown = document.getElementById('settings-dropdown');
+
+    if (settingsBtn && settingsDropdown) {
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsBtn.classList.toggle('active');
+            settingsDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!settingsDropdown.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
+                settingsBtn.classList.remove('active');
+                settingsDropdown.classList.remove('active');
+            }
         });
     }
 
@@ -742,8 +881,8 @@ document.addEventListener('DOMContentLoaded', () => {
         searchOverlay.scrollLeft = searchInput.scrollLeft;
     });
 
-    // Remove Neon ativo após 200ms nos botões do Menu, Players e Mensagens para retorno rápido (era 300ms)
-    document.querySelectorAll('.flex-btn, #theme-btn, #report-messages-btn, #list-songs-btn, #search-songs-btn').forEach(btn => {
+    // Remove Neon ativo após 200ms nos botões do Menu, Players, Configurações e Mensagens para retorno rápido (era 300ms)
+    document.querySelectorAll('.flex-btn, #theme-btn, #report-messages-btn, #settings-btn, #list-songs-btn, #search-songs-btn').forEach(btn => {
         // Intercepta qualquer forma de click/pressão pra garantir em todos os dipositivos
         btn.addEventListener('mousedown', () => activateNeon(btn));
         btn.addEventListener('touchstart', () => activateNeon(btn), {passive: true});

@@ -61,6 +61,7 @@
 [data-theme="light"] .back-icon,
 [data-theme="light"] .bug-icon,
 [data-theme="light"] .report-messages-icon,
+[data-theme="light"] .settings-icon,
 [data-theme="light"] .musical-note-img,
 [data-theme="light"] .search-img,
 [data-theme="light"] .title-logo,
@@ -1127,16 +1128,121 @@ body.no-scroll {
     transform: scale(0.97);
 }
 
-/* Header Controls & Bug messages button */
+/* Header Controls & Settings Dropdown */
 .top-bar-controls {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
+/* styles for #settings-btn are inherited from .icon-btn now */
+
+.settings-icon {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (hover: hover) {
+    #settings-btn:hover .settings-icon {
+        transform: rotate(45deg);
+    }
+}
+
+#settings-btn.active .settings-icon {
+    transform: rotate(90deg);
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    background: var(--modal-bg);
+    border: 1.2px solid var(--modal-border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    min-width: 180px;
+    box-sizing: border-box;
+    
+    /* Animation base state */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.95);
+    transform-origin: top right;
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--modal-border);
+    z-index: 999;
+}
+
+.settings-dropdown::after {
+    content: '';
+    position: absolute;
+    top: -8.8px;
+    right: 11px;
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid var(--modal-bg);
+    z-index: 1001;
+}
+
+.settings-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.dropdown-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.dropdown-item-label {
+    font-family: 'Montserrat-Black', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--text-color);
+    opacity: 0.8;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+}
+
+.dropdown-control-wrapper {
+    width: 56px; /* Largura do switch de tema */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #report-messages-btn {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1149,8 +1255,8 @@ body.no-scroll {
 }
 
 .icon-btn img.report-messages-icon {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
 }
 
@@ -1251,4 +1357,95 @@ body.no-scroll {
     opacity: 0.5;
     padding: 24px 0;
     color: var(--text-color);
+}
+
+/* Password Modal Custom Styles */
+.password-modal-content {
+    max-width: 320px;
+}
+
+.password-input-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#prompt-password-input {
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    border: 1.2px solid var(--modal-border);
+    border-radius: 12px;
+    padding: 0 44px;
+    box-sizing: border-box;
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    outline: none;
+    text-align: center;
+    transition: border-color 0.25s ease;
+}
+
+.password-visibility-btn {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.password-visibility-icon {
+    width: 18px;
+    height: 18px;
+    stroke: var(--text-color);
+    opacity: 0.65;
+    transition: opacity 0.2s ease, stroke 0.25s ease;
+}
+
+.password-visibility-icon.hidden {
+    display: none;
+}
+
+.password-visibility-btn:hover .password-visibility-icon {
+    opacity: 0.95;
+    stroke: var(--accent);
+}
+
+#prompt-password-input:focus {
+    border-color: var(--accent) !important;
+}
+
+#prompt-password-input::placeholder {
+    font-family: 'Montserrat-Italic', sans-serif;
+    opacity: 0.45;
+    font-size: 0.85rem;
+}
+
+.prompt-error-msg {
+    color: #ff3b30;
+    font-size: 0.65rem;
+    font-family: 'Montserrat-Black', sans-serif;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-top: -4px;
+    animation: shake 0.3s ease;
+}
+
+.prompt-error-msg.hidden {
+    display: none;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
 }
