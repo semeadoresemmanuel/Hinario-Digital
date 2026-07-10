@@ -606,10 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (reportMessagesBtn && bugsListModal) {
         let isUnlocked = false;
-        const errorIcon = reportMessagesBtn.querySelector('.report-messages-icon');
-
-        if (errorIcon) {
-            errorIcon.src = 'src/assets/elements/closed_eye.svg';
+        const errorClosedEye = document.getElementById('report-messages-closed-eye');
+        const errorOpenEye = document.getElementById('report-messages-eye');
+        if (errorClosedEye && errorOpenEye) {
+            errorClosedEye.classList.remove('hidden');
+            errorOpenEye.classList.add('hidden');
         }
 
         const passwordPromptModal = document.getElementById('password-prompt-modal');
@@ -643,8 +644,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const pwd = passwordInput.value;
             if (pwd === 'admsemeadores*') {
                 isUnlocked = true;
-                if (errorIcon) {
-                    errorIcon.src = 'src/assets/elements/eye.svg';
+                if (errorClosedEye && errorOpenEye) {
+                    errorClosedEye.classList.add('hidden');
+                    errorOpenEye.classList.remove('hidden');
                 }
                 closePasswordModal();
                 renderBugsList();

@@ -60,7 +60,6 @@
 
 [data-theme="light"] .back-icon,
 [data-theme="light"] .bug-icon,
-[data-theme="light"] .report-messages-icon,
 [data-theme="light"] .settings-icon,
 [data-theme="light"] .musical-note-img,
 [data-theme="light"] .search-img,
@@ -1254,10 +1253,16 @@ body.no-scroll {
     -webkit-tap-highlight-color: transparent;
 }
 
-.icon-btn img.report-messages-icon {
+.report-messages-icon {
     width: 28px;
     height: 28px;
-    object-fit: contain;
+    fill: #00cc00;
+}
+.report-messages-icon.hidden {
+    display: none;
+}
+[data-theme="light"] .report-messages-icon {
+    fill: #009C00;
 }
 
 /* Bugs List Modal Styling */
