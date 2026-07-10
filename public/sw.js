@@ -1,7 +1,21 @@
-const CACHE_NAME = 'hinario-v72';
+const CACHE_NAME = 'hinario-v102';
 const urlsToCache = [
     './',
     './index.html',
+    './src/index.css',
+    './src/app.js',
+    './src/data/hymns.json',
+    './src/data/categories.json',
+    './src/assets/elements/gear.svg',
+    './src/assets/elements/search.svg',
+    './src/assets/elements/title.svg',
+    './src/assets/elements/back.svg',
+    './src/assets/elements/spotify.svg',
+    './src/assets/elements/yt_music.svg',
+    './src/assets/elements/playlist.svg',
+    './src/assets/elements/report_a_bug.svg',
+    './src/assets/elements/closed_eye.svg',
+    './src/assets/elements/eye.svg',
     './manifest.json',
     './favicon.svg',
     './icon-192.png',
