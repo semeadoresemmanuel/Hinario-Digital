@@ -1230,6 +1230,8 @@ body.no-scroll {
     white-space: nowrap;
     flex: 1;
     text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .dropdown-control-wrapper {
