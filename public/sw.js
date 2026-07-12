@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hinario-v103';
+const CACHE_NAME = 'hinario-v110';
 const urlsToCache = [
     './',
     './index.html',
@@ -14,6 +14,8 @@ const urlsToCache = [
     './src/assets/elements/yt_music.svg',
     './src/assets/elements/playlist.svg',
     './src/assets/elements/report_a_bug.svg',
+    './src/assets/elements/check.svg',
+    './src/assets/elements/trash.svg',
     './manifest.json',
     './favicon.svg',
     './icon-192.png',
