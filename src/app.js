@@ -505,11 +505,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const bugDescription = document.getElementById('bug-description');
     const bugCancelBtn = document.getElementById('bug-cancel-btn');
     const bugSubmitBtn = document.getElementById('bug-submit-btn');
+    const bugConfirmModal = document.getElementById('bug-confirm-modal');
+    const bugConfirmOkBtn = document.getElementById('bug-confirm-ok-btn');
     const reportBugBtn = document.getElementById('report-bug-btn');
+    const bugErrorMsg = document.getElementById('bug-error-msg');
+
+    // Action Confirm elements
+    const actionConfirmModal = document.getElementById('action-confirm-modal');
+    const actionConfirmTitle = document.getElementById('action-confirm-title');
+    const actionConfirmMessage = document.getElementById('action-confirm-message');
+    const actionConfirmCancelBtn = document.getElementById('action-confirm-cancel-btn');
+    const actionConfirmOkBtn = document.getElementById('action-confirm-ok-btn');
+    let onConfirmCallback = null;
+
+    const showActionConfirm = (title, message, callback) => {
+        if (!actionConfirmModal) return;
+        actionConfirmTitle.innerText = title;
+        actionConfirmMessage.innerText = message;
+        onConfirmCallback = callback;
+        actionConfirmModal.classList.add('active');
+    };
+
+    if (actionConfirmCancelBtn && actionConfirmModal) {
+        actionConfirmCancelBtn.addEventListener('click', () => {
+            actionConfirmModal.classList.remove('active');
+            onConfirmCallback = null;
+        });
+    }
+
+    if (actionConfirmOkBtn && actionConfirmModal) {
+        actionConfirmOkBtn.addEventListener('click', () => {
+            if (onConfirmCallback) {
+                onConfirmCallback();
+            }
+            actionConfirmModal.classList.remove('active');
+            onConfirmCallback = null;
+        });
+    }
+
+    if (actionConfirmModal) {
+        actionConfirmModal.addEventListener('click', (e) => {
+            if (e.target === actionConfirmModal) {
+                actionConfirmModal.classList.remove('active');
+                onConfirmCallback = null;
+            }
+        });
+    }
 
     if (reportBugBtn && bugReportModal) {
         reportBugBtn.addEventListener('click', (e) => {
             bugDescription.value = ''; // Reset input
+            if (bugErrorMsg) bugErrorMsg.classList.add('hidden');
             bugReportModal.classList.add('active');
             // Timeout to allow bounce transform to finish before focusing
             setTimeout(() => {
@@ -533,11 +579,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (bugConfirmModal) {
+        bugConfirmModal.addEventListener('click', (e) => {
+            if (e.target === bugConfirmModal) {
+                bugConfirmModal.classList.remove('active');
+            }
+        });
+    }
+
+    if (bugConfirmOkBtn && bugConfirmModal) {
+        bugConfirmOkBtn.addEventListener('click', () => {
+            bugConfirmModal.classList.remove('active');
+        });
+    }
+
+    if (bugDescription) {
+        bugDescription.addEventListener('input', () => {
+            if (bugErrorMsg) {
+                bugErrorMsg.classList.add('hidden');
+            }
+        });
+    }
+
     if (bugSubmitBtn && bugReportModal && bugDescription) {
         bugSubmitBtn.addEventListener('click', () => {
             const text = bugDescription.value.trim();
             if (!text) {
-                alert('Por favor, descreva o erro antes de enviar.');
+                if (bugErrorMsg) {
+                    bugErrorMsg.classList.remove('hidden');
+                    bugErrorMsg.style.animation = 'none';
+                    bugErrorMsg.offsetHeight; /* trigger reflow */
+                    bugErrorMsg.style.animation = null;
+                }
                 return;
             }
             
@@ -554,11 +627,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             localStorage.setItem('reportedBugs', JSON.stringify(reportedBugs));
             
-            const subject = encodeURIComponent(`Hinário Digital - Erro na música: ${songTitle}`);
-            const body = encodeURIComponent(`Olá,\n\nGostaria de relatar o seguinte erro na música "${songTitle}" (Artista/Grupo: ${songAuthor}):\n\n${text}\n\n`);
-            
-            window.location.href = `mailto:suporte@hinariodigital.com?subject=${subject}&body=${body}`;
             bugReportModal.classList.remove('active');
+            
+            // Show confirmation modal
+            if (bugConfirmModal) {
+                setTimeout(() => {
+                    bugConfirmModal.classList.add('active');
+                }, 300);
+            }
         });
     }
 
@@ -588,19 +664,47 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="bug-report-item-date">${bug.date}</span>
                 </div>
                 <p class="bug-report-item-desc">${bug.description}</p>
-                <button class="bug-report-item-delete" data-index="${index}">RESOLVIDO</button>
+                <div class="bug-report-item-footer">
+                    <button class="bug-report-item-resolve" data-index="${index}" aria-label="Resolvido">
+                        <img src="src/assets/elements/check.svg" alt="Resolvido" class="check-icon">
+                    </button>
+                    <button class="bug-report-item-trash" data-index="${index}" aria-label="Apagar erro">
+                        <img src="src/assets/elements/trash.svg" alt="Apagar" class="trash-icon">
+                    </button>
+                </div>
             </div>
         `).join('');
 
-        // Add delete listener to each button
-        bugsModalList.querySelectorAll('.bug-report-item-delete').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const index = parseInt(e.target.getAttribute('data-index'));
-                const bugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
-                bugs.splice(index, 1);
-                localStorage.setItem('reportedBugs', JSON.stringify(bugs));
-                renderBugsList();
-            });
+        const resolveAction = (e) => {
+            const index = parseInt(e.currentTarget.getAttribute('data-index'));
+            const bugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
+            bugs.splice(index, 1);
+            localStorage.setItem('reportedBugs', JSON.stringify(bugs));
+            renderBugsList();
+        };
+
+        const deleteAction = (e) => {
+            const index = parseInt(e.currentTarget.getAttribute('data-index'));
+            showActionConfirm(
+                'APAGAR ERRO',
+                'Deseja realmente excluir este relato de erro?',
+                () => {
+                    const bugs = JSON.parse(localStorage.getItem('reportedBugs')) || [];
+                    bugs.splice(index, 1);
+                    localStorage.setItem('reportedBugs', JSON.stringify(bugs));
+                    renderBugsList();
+                }
+            );
+        };
+
+        // Add resolve listener to resolve button
+        bugsModalList.querySelectorAll('.bug-report-item-resolve').forEach(btn => {
+            btn.addEventListener('click', resolveAction);
+        });
+
+        // Add delete listener to trash button
+        bugsModalList.querySelectorAll('.bug-report-item-trash').forEach(btn => {
+            btn.addEventListener('click', deleteAction);
         });
     }
 
@@ -755,10 +859,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (bugsClearAllBtn && bugsListModal) {
         bugsClearAllBtn.addEventListener('click', () => {
-            if (confirm('Deseja realmente limpar todo o histórico de erros reportados?')) {
-                localStorage.removeItem('reportedBugs');
-                renderBugsList();
-            }
+            showActionConfirm(
+                'LIMPAR HISTÓRICO',
+                'Deseja realmente limpar todo o histórico de erros reportados?',
+                () => {
+                    localStorage.removeItem('reportedBugs');
+                    renderBugsList();
+                }
+            );
         });
     }
 

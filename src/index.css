@@ -1337,24 +1337,104 @@ body.no-scroll {
     color: var(--text-color);
 }
 
-.bug-report-item-delete {
-    align-self: flex-end;
-    background: transparent;
+.bug-report-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.bug-report-item-resolve {
+    background: var(--accent);
     border: none;
-    color: #ff3333;
-    font-family: 'Montserrat-Black', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 900;
+    color: #ffffff;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 4px 0 0 0;
-    letter-spacing: 0.5px;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.1s ease;
     outline: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-.bug-report-item-delete:hover {
+.bug-report-item-resolve:hover {
+    opacity: 0.85;
+}
+
+.bug-report-item-resolve:active {
+    transform: scale(0.92);
+}
+
+.bug-report-item-resolve .check-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.bug-report-item-trash {
+    background: #ff3333;
+    border: none;
+    color: #ffffff;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bug-report-item-trash:hover {
+    opacity: 0.85;
+}
+
+.bug-report-item-trash:active {
+    transform: scale(0.92);
+}
+
+.bug-report-item-trash .trash-icon {
+    width: 14px;
+    height: 16px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.bug-confirm-content {
+    max-width: 320px;
+    align-items: center;
+    text-align: center;
+}
+
+#action-confirm-modal, #bug-confirm-modal {
+    z-index: 3000;
+}
+
+.bug-confirm-message {
+    font-family: 'Montserrat-SemiBold', sans-serif;
+    font-size: 0.8rem;
+    color: var(--text-color);
     opacity: 0.8;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.bug-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.bug-confirm-buttons .modal-btn {
+    max-width: 120px;
 }
 
 .no-bugs-msg {
