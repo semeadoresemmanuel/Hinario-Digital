@@ -1,26 +1,13 @@
-const CACHE_NAME = 'hinario-v1.0.0';
-const urlsToCache = [
+const CACHE_NAME = 'hinario-v1.0.2';
+
+// Recursos essenciais do shell do aplicativo
+const PRECACHE_URLS = [
     './',
     './index.html',
     './manifest.json',
     './favicon.svg',
     './icon-192.png',
-    './icon-512.png',
-    './src/index.css',
-    './src/app.js',
-    './src/assets/elements/back.svg',
-    './src/assets/elements/check.svg',
-    './src/assets/elements/gear.svg',
-    './src/assets/elements/playlist.svg',
-    './src/assets/elements/report_a_bug.svg',
-    './src/assets/elements/search.svg',
-    './src/assets/elements/spotify.svg',
-    './src/assets/elements/title.svg',
-    './src/assets/elements/trash.svg',
-    './src/assets/elements/yt_music.svg',
-    './src/assets/font/Montserrat/Montserrat-Black.ttf',
-    './src/assets/font/Montserrat/Montserrat-SemiBold.ttf',
-    './src/assets/font/Montserrat/Montserrat-Italic.ttf'
+    './icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -28,34 +15,10 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             return Promise.allSettled(
-                urlsToCache.map(url => cache.add(url).catch(err => {
-                    console.warn('Falha no pré-cache de:', url, err);
+                PRECACHE_URLS.map(url => cache.add(url).catch(err => {
+                    console.warn('Falha no pré-cache:', url, err);
                 }))
             );
-        })
-    );
-});
-
-self.addEventListener('fetch', event => {
-    if (!event.request.url.startsWith('http') || event.request.method !== 'GET') return;
-
-    event.respondWith(
-        caches.match(event.request).then(cachedResponse => {
-            const fetchPromise = fetch(event.request)
-                .then(networkResponse => {
-                    if (networkResponse && networkResponse.status === 200) {
-                        const responseClone = networkResponse.clone();
-                        caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
-                    }
-                    return networkResponse;
-                })
-                .catch(() => {
-                    if (event.request.mode === 'navigate') {
-                        return caches.match('./') || caches.match('./index.html');
-                    }
-                });
-
-            return cachedResponse || fetchPromise;
         })
     );
 });
@@ -71,5 +34,59 @@ self.addEventListener('activate', event => {
                 })
             );
         }).then(() => self.clients.claim())
+    );
+});
+
+self.addEventListener('fetch', event => {
+    if (!event.request.url.startsWith('http') || event.request.method !== 'GET') return;
+
+    const request = event.request;
+    const isNavigation = request.mode === 'navigate';
+
+    // 1. Navegação de páginas HTML: Network-First com fallback para Cache
+    if (isNavigation) {
+        event.respondWith(
+            fetch(request)
+                .then(networkResponse => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseClone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(cache => cache.put(request, responseClone));
+                    }
+                    return networkResponse;
+                })
+                .catch(() => {
+                    return caches.match(request)
+                        .then(cached => cached || caches.match('./') || caches.match('./index.html'));
+                })
+        );
+        return;
+    }
+
+    // 2. Requisições internas do Vite em desenvolvimento: sempre rede primeiro
+    if (request.url.includes('/@vite/') || request.url.includes('/@fs/') || request.url.includes('?direct')) {
+        event.respondWith(
+            fetch(request).catch(() => caches.match(request))
+        );
+        return;
+    }
+
+    // 3. Demais recursos (JS, CSS, Fontes, Imagens, SVGs): Cache-First / Stale-While-Revalidate com auto-cache
+    event.respondWith(
+        caches.match(request).then(cachedResponse => {
+            const fetchPromise = fetch(request)
+                .then(networkResponse => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        const responseClone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(cache => cache.put(request, responseClone));
+                    }
+                    return networkResponse;
+                })
+                .catch(() => {
+                    return cachedResponse;
+                });
+
+            // Retorna do cache se já existir (velocidade instantânea / offline) ou aguarda o fetch
+            return cachedResponse || fetchPromise;
+        })
     );
 });

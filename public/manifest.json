@@ -1,14 +1,27 @@
 {
     "name": "Hinário Digital",
     "short_name": "Hinário Digital",
-    "description": "Hinário Digital",
+    "description": "Hinário Digital - Letras e Cifras",
+    "lang": "pt-BR",
+    "dir": "ltr",
     "start_url": "./index.html",
     "scope": "./",
     "id": "./index.html",
     "display": "fullscreen",
-    "orientation": "portrait-primary",
+    "display_override": [
+        "fullscreen",
+        "standalone",
+        "minimal-ui",
+        "browser"
+    ],
+    "orientation": "any",
     "background_color": "#f7f7f7",
     "theme_color": "#f7f7f7",
+    "categories": [
+        "music",
+        "lifestyle",
+        "utilities"
+    ],
     "icons": [
         {
             "src": "favicon.svg",

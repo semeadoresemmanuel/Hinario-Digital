@@ -1,6 +1,9 @@
 import songs from './data/songs.js';
-import checkIcon from './assets/elements/check.svg';
-import trashIcon from './assets/elements/trash.svg';
+
+// Native SVG Icons for Bug Resolution & Trash
+const CHECK_ICON_SVG = `<svg viewBox="0 0 79.375 67.46875" class="check-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="m 0,35.05928 c 1.635916,-3.26132 4.907744,-7.33799 10.633444,-5.70731 4.907744,1.63067 8.179575,6.52266 10.633447,13.04529 C 40.897864,20.3833 57.25701,4.892 76.887986,0 79.341857,0 80.159814,0 78.523901,1.63068 57.25701,16.30666 36.808079,38.32063 20.448932,66.85723 c -0.817956,0.81536 -1.635913,0.81536 -2.453872,0 C 14.723232,58.70392 12.26936,50.55061 8.179572,42.39726 6.54366,38.32063 4.089788,35.05928 0,35.05928 Z"/></svg>`;
+
+const TRASH_ICON_SVG = `<svg viewBox="0 0 68.791663 79.374999" class="trash-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M 29.659947,0 C 23.345645,0 18.111098,5.17516 18.111098,11.60197 v 2.75339 H 6.812147 C 3.073417,14.35536 0,17.44452 0,21.20046 v 1.00092 c 0,1.25196 0.996345,2.25455 2.242589,2.25455 h 64.30649 c 1.24624,0 2.24259,-1.00259 2.24259,-2.25455 v -0.91776 c 0,-3.83939 -2.99034,-6.92826 -6.81214,-6.92826 H 50.680569 V 11.60197 C 50.680569,5.2586 45.529109,0 39.131722,0 Z m 0,7.34558 h 9.471775 c 2.326322,0 4.236897,1.91934 4.236897,4.25639 v 2.75339 H 25.423043 v -2.75339 c 0,-2.33705 1.910581,-4.25639 4.236904,-4.25639 z M 6.64663,29.63012 10.052707,70.77906 c 0.415416,4.84097 4.485827,8.59594 9.304634,8.59594 h 29.994228 c 4.90189,0 8.88923,-3.75497 9.30464,-8.59594 l 3.40607,-41.14894 z m 42.289519,8.6807 c 1.82782,0.0836 3.23927,1.66865 3.15618,3.50487 l -1.41176,25.62478 c -0.0831,1.75278 -1.57857,3.1707 -3.32331,3.1707 h -0.16716 c -1.82782,-0.0836 -3.23925,-1.66868 -3.15618,-3.5049 l 1.41177,-25.62474 c 0.0831,-1.83623 1.66263,-3.25415 3.49045,-3.17071 z m -29.07901,0.083 c 1.827825,-0.0836 3.40575,1.33613 3.488832,3.17235 l 1.41176,25.62314 c 0.08309,1.83622 -1.328352,3.4214 -3.156178,3.50487 h -0.16715 c -1.74474,0 -3.240229,-1.33445 -3.323314,-3.17068 L 16.699328,41.89873 c -0.08309,-1.83622 1.329979,-3.42143 3.157801,-3.50491 z m 14.539507,0 c 1.827823,0 3.323315,1.50238 3.323315,3.33863 v 25.53998 c 0,1.83622 -1.495492,3.33863 -3.323315,3.33863 -1.827826,0 -3.323315,-1.50241 -3.323315,-3.33863 V 41.73245 c 0,-1.83625 1.495489,-3.33863 3.323315,-3.33863 z"/></svg>`;
 
 // Pre-compiled chord detection patterns for optimal performance
 const CHORD_UNIT_SOURCE = '[(]?[A-G][b#]?(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?(?:\\/(?:[A-G][b#]?|[0-9]+)(?:m|M|maj|min|dim|aug|sus|add|alt|[2-9]|11|13|\\+|M|F)*(?:\\([#b0-9a-zA-Z\\+\\-]*\\))?)?[)]?';
@@ -81,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Process valid songs from songs.js
     const validSongs = songs.filter(s => s.title && (s.lyrics || s.chords) && s.title.trim().length > 1);
-    validSongs.sort((a, b) => a.title.localeCompare(b.title));
+    validSongs.sort((a, b) => a.title.localeCompare(b.title, 'pt-BR'));
 
     // Helper to remove accents for searching
     function removeAccents(str) {
@@ -102,7 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 chords: song.chords
             },
             originalIndex: idx,
-            normalizedTitle: removeAccents(cleanTitle.toLowerCase())
+            normalizedTitle: removeAccents(cleanTitle.toLowerCase()),
+            normalizedAuthor: removeAccents((song.author || '').toLowerCase())
         };
     });
 
@@ -121,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 songsList.appendChild(li);
             });
             updateFabBackListBtnVisibility();
+            adjustListFontSize();
             return;
         }
 
@@ -129,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         preparedSongsList.forEach((item) => {
             const normalizedTitle = item.normalizedTitle;
+            const normalizedAuthor = item.normalizedAuthor;
             
             let score = 0;
             const isNumberSearch = /^\d+$/.test(searchWord);
@@ -147,13 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (score >= 150) {
                 titleMatches.push({ item, score });
             } else if (normalizedTitle === searchWord) {
-                score = 100; // Exact match
+                score = 100; // Exact title match
                 titleMatches.push({ item, score });
             } else if (normalizedTitle.startsWith(searchWord)) {
-                score = 50; // Starts with
+                score = 50; // Title starts with
                 titleMatches.push({ item, score });
             } else if (normalizedTitle.includes(searchWord)) {
                 score = 20; // Title contains
+                titleMatches.push({ item, score });
+            } else if (normalizedAuthor && normalizedAuthor.includes(searchWord)) {
+                score = 10; // Author/Artist contains
                 titleMatches.push({ item, score });
             }
         });
@@ -174,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             songsList.appendChild(li);
         });
         updateFabBackListBtnVisibility();
+        adjustListFontSize();
     }
 
     // Is it a chord line?
@@ -247,52 +257,83 @@ document.addEventListener('DOMContentLoaded', () => {
         return isChordsSource ? processedLines.join('') : processedLines.join('\n');
     }
 
+    // Adjust list font size dynamically using the longest song title as baseline
+    function adjustListFontSize() {
+        if (!songsList || preparedSongsList.length === 0) return;
+        requestAnimationFrame(() => {
+            const listWidth = songsList.clientWidth;
+            if (listWidth === 0) return;
+
+            const baseSize = 0.95; // rem
+            const probe = document.createElement('div');
+            probe.className = 'song-item';
+            probe.style.position = 'absolute';
+            probe.style.visibility = 'hidden';
+            probe.style.width = 'auto';
+            probe.style.whiteSpace = 'nowrap';
+            probe.style.fontSize = baseSize + 'rem';
+            probe.style.letterSpacing = '0.2px';
+            probe.style.padding = '0';
+            probe.style.border = 'none';
+
+            const longestItem = preparedSongsList.reduce((longest, curr) => (curr.hybridSongObj.title.length > longest.hybridSongObj.title.length ? curr : longest), preparedSongsList[0]);
+            probe.innerHTML = longestItem ? longestItem.originalText : '';
+            document.body.appendChild(probe);
+
+            const textWidth = probe.clientWidth;
+            document.body.removeChild(probe);
+
+            // Available width inside song item (accounting for item side padding and small margin)
+            const availableWidth = listWidth - 8;
+            if (textWidth > availableWidth && availableWidth > 50) {
+                const ratio = (availableWidth * 0.98) / textWidth;
+                const newSize = Math.max(0.60, baseSize * ratio);
+                document.documentElement.style.setProperty('--song-item-font-size', newSize.toFixed(3) + 'rem');
+            } else {
+                document.documentElement.style.setProperty('--song-item-font-size', baseSize + 'rem');
+            }
+        });
+    }
+
     // Ensure titles fit in a single line by dynamically reducing font-size
     function fitTitleText() {
         if (!viewSong.classList.contains('active')) return;
 
         const titleEl = songTitleEl;
         const parent = titleEl.parentElement;
+        if (!parent) return;
         
-        // Measure real parent width avoiding 0 cases caused by DOM timings
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             const parentWidth = parent.clientWidth;
-            
-            // If it's 0, elements aren't painted yet. We queue again and wait.
             if (parentWidth === 0) {
                 requestAnimationFrame(fitTitleText);
                 return;
             }
 
-            // Set base size matching CSS rules
-            const baseSize = 0.95; 
+            const baseSize = 0.85; 
             titleEl.style.fontSize = baseSize + 'rem';
             
-            // Create a temporary unconstrained clone to measure raw text width without ellipsis clipping
             const clone = titleEl.cloneNode(true);
             clone.style.position = 'absolute';
             clone.style.visibility = 'hidden';
-            clone.style.width = 'auto'; // allow it to stretch past boundaries natively
+            clone.style.width = 'auto';
             clone.style.whiteSpace = 'nowrap';
+            clone.style.fontFamily = "'Montserrat-Black', sans-serif";
+            clone.style.fontWeight = '700';
             clone.style.fontSize = baseSize + 'rem';
             clone.style.textOverflow = 'clip';
             document.body.appendChild(clone);
             
             const textWidth = clone.clientWidth;
+            document.body.removeChild(clone);
             
-            if (textWidth > parentWidth) {
-                // Calculate ratio (margin of 98% to avoid touching edges)
+            if (textWidth > parentWidth && parentWidth > 50) {
                 const ratio = (parentWidth * 0.98) / textWidth;
                 let newSize = baseSize * ratio;
-                
-                // Limit how small it can get
-                if (newSize < 0.65) newSize = 0.65;
-                
-                titleEl.style.fontSize = newSize.toFixed(2) + 'rem';
+                if (newSize < 0.50) newSize = 0.50;
+                titleEl.style.fontSize = newSize.toFixed(3) + 'rem';
             }
-            
-            document.body.removeChild(clone);
-        }, 10); // Guarantee initial flexbox constraints are laid out
+        });
     }
 
     let isSongScrollable = false;
@@ -500,6 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('no-scroll');
         if (listHeaderBar) listHeaderBar.classList.remove('header-hidden');
         updateFabBackListBtnVisibility();
+        adjustListFontSize();
     }
     
     songBackBtn.addEventListener('click', closeSongView);
@@ -670,10 +712,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="bug-report-item-desc">${bug.description}</p>
                 <div class="bug-report-item-footer">
                     <button class="bug-report-item-resolve" data-index="${index}" aria-label="Resolvido">
-                        <img src="${checkIcon}" alt="Resolvido" class="check-icon">
+                        ${CHECK_ICON_SVG}
                     </button>
                     <button class="bug-report-item-trash" data-index="${index}" aria-label="Apagar erro">
-                        <img src="${trashIcon}" alt="Apagar" class="trash-icon">
+                        ${TRASH_ICON_SVG}
                     </button>
                 </div>
             </div>
@@ -884,7 +926,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     fabBackListBtn.addEventListener('click', goBackToMenu);
-    listContentEl.addEventListener('scroll', updateListFadeInState);
 
     // Font Size Controls
     const enhanceFontLogic = () => {
@@ -1039,6 +1080,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('resize', () => {
+        adjustListFontSize();
+        fitTitleText();
         updateFabBackBtnVisibility();
         updateFabBackListBtnVisibility();
     });
