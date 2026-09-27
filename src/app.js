@@ -1,5 +1,12 @@
 import songs from './data/songs.js';
 
+// Native SVG Icons for Player & List Controls
+const PLAY_ICON_SVG = `<svg viewBox="0 0 132.29166 132.29168" class="song-play-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="m 66.145827,0 c -36.473166,0 -66.145827,29.6727 -66.145827,66.14587 0,36.47317 29.672661,66.14581 66.145827,66.14581 36.47318,0 66.14584,-29.67264 66.14584,-66.14581 0,-36.47317 -29.67266,-66.14587 -66.14584,-66.14587 z m 27.41203,72.00656 -37.941307,23.97112 c -2.037268,1.29426 -4.732576,1.47338 -7.051296,0.21165 -2.209321,-1.2171 -3.585172,-3.54552 -3.585172,-6.07221 v -47.9304 c 0,-2.52682 1.375851,-4.85517 3.585172,-6.07221 2.209321,-1.2171 4.908018,-1.13767 7.051296,0.21185 l 37.941307,23.95755 c 2.02407,1.28328 3.22788,3.46616 3.22788,5.86056 0,2.39439 -1.20388,4.59052 -3.22788,5.86049 z"/></svg>`;
+
+const PAUSE_ICON_SVG = `<svg viewBox="0 0 132.29166 132.29168" class="song-play-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M 66.145831 0 C 29.672665 0 0 29.672661 0 66.145831 C 0 102.619 29.672665 132.29166 66.145831 132.29166 C 102.61901 132.29166 132.29166 102.619 132.29166 66.145831 C 132.29166 29.672661 102.61901 0 66.145831 0 z M 40.662116 35.250043 L 56.708164 35.250043 C 58.930624 35.250043 60.719806 37.039232 60.719806 39.261685 L 60.719806 93.030494 C 60.719806 95.252947 58.930624 97.042135 56.708164 97.042135 L 40.662116 97.042135 C 38.439656 97.042135 36.650475 95.252947 36.650475 93.030494 L 36.650475 39.261685 C 36.650475 37.039232 38.439656 35.250043 40.662116 35.250043 z M 75.583497 35.250043 L 91.629546 35.250043 C 93.852006 35.250043 95.641704 37.039232 95.641704 39.261685 L 95.641704 93.030494 C 95.641704 95.252947 93.852006 97.042135 91.629546 97.042135 L 75.583497 97.042135 C 73.361047 97.042135 71.571856 95.252947 71.571856 93.030494 L 71.571856 39.261685 C 71.571856 37.039232 73.361047 35.250043 75.583497 35.250043 z"/></svg>`;
+
+const PLAYLIST_ICON_SVG = `<svg viewBox="0 0 132.29168 132.29167" class="song-play-icon play-all-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-143.34054,-126.53636)"><path d="m 115.62293,122.03326 c -0.29237,0 -0.5292,0.2368 -0.5292,0.52917 v 5.29167 c 0,0.29237 0.23683,0.52916 0.5292,0.52916 h 5.29164 c 0.29237,0 0.52917,-0.23679 0.52917,-0.52916 v -5.29167 c 0,-0.29237 -0.2368,-0.52917 -0.52917,-0.52917 z m 6.34997,1.05833 v 5.49464 a 0.32621691,0.32621691 0 0 1 -0.32619,0.3262 h -5.49464 a 0.52958334,0.52958334 0 0 0 0.53002,0.52917 h 5.28999 a 0.53000646,0.53000646 0 0 0 0.52999,-0.53 v -5.28998 a 0.52958334,0.52958334 0 0 0 -0.52917,-0.53003 z m -2.84037,0.43263 h 7e-5 c 0.12725,4e-5 0.23836,0.10329 0.23836,0.23637 v 2.16433 c 0,0.006 -5.5e-4,0.0108 -10e-4,0.0155 a 0.55346974,0.55346974 0 0 1 -0.55245,0.53803 0.55346974,0.55346974 0 0 1 -0.55351,-0.55351 0.55346974,0.55346974 0 0 1 0.55351,-0.55348 0.55346974,0.55346974 0 0 1 0.29183,0.0832 v -0.94437 c 0,-0.0565 -0.0531,-0.0989 -0.1097,-0.0848 l -1.26266,0.30778 c -0.0388,0.0105 -0.0671,0.0459 -0.0671,0.0848 v 1.52073 c 0,0.0134 -9.8e-4,0.0255 -0.002,0.0369 a 0.55346974,0.55346974 0 0 1 -0.55106,0.51653 0.55346974,0.55346974 0 0 1 -0.55348,-0.55347 0.55346974,0.55346974 0 0 1 0.55348,-0.55348 0.55346974,0.55346974 0 0 1 0.29183,0.0832 v -1.7224 c 0,-0.12378 0.0848,-0.22988 0.20155,-0.2582 l 1.46768,-0.35726 c 0.0186,-0.004 0.037,-0.006 0.0552,-0.006 z m 3.89871,0.62571 v 5.49463 a 0.32621691,0.32621691 0 0 1 -0.3262,0.32624 h -5.49464 a 0.52958334,0.52958334 0 0 0 0.53003,0.52913 h 5.28998 a 0.53000646,0.53000646 0 0 0 0.52999,-0.52999 v -5.28999 a 0.52958334,0.52958334 0 0 0 -0.52916,-0.53002 z" transform="matrix(15.624994,0,0,15.624994,-1654.9983,-1780.2326)" /></g></svg>`;
+
 // Native SVG Icons for Bug Resolution & Trash
 const CHECK_ICON_SVG = `<svg viewBox="0 0 79.375 67.46875" class="check-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="m 0,35.05928 c 1.635916,-3.26132 4.907744,-7.33799 10.633444,-5.70731 4.907744,1.63067 8.179575,6.52266 10.633447,13.04529 C 40.897864,20.3833 57.25701,4.892 76.887986,0 79.341857,0 80.159814,0 78.523901,1.63068 57.25701,16.30666 36.808079,38.32063 20.448932,66.85723 c -0.817956,0.81536 -1.635913,0.81536 -2.453872,0 C 14.723232,58.70392 12.26936,50.55061 8.179572,42.39726 6.54366,38.32063 4.089788,35.05928 0,35.05928 Z"/></svg>`;
 
@@ -44,8 +51,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const fabBackListBtn = document.getElementById('fab-back-list-btn');
     const listContentEl = document.querySelector('.list-content');
 
+    // Global Audio & Header Mini Player Elements
+    const globalAudio = document.getElementById('global-audio');
+    const headerPlayer = document.getElementById('header-player');
+    const playerMarqueeTrack = document.getElementById('player-marquee-track');
+    const playerMarqueeContent = document.getElementById('player-marquee-content');
+    const playerMarqueeContainer = document.getElementById('player-marquee-container');
+    const playerPrevBtn = document.getElementById('player-prev-btn');
+    const playerPlayBtn = document.getElementById('player-play-btn');
+    const playerNextBtn = document.getElementById('player-next-btn');
+    const playerIconPlay = document.getElementById('player-icon-play');
+    const playerIconPause = document.getElementById('player-icon-pause');
 
-    // SVG Controls Mode
+    let currentPlayingIndex = -1;
+    let isPlaylistMode = false;
+    let isAudioPlaying = false;
+    let isHeaderPlayerVisible = false;
     const fontDecreaseSvg = document.getElementById('font-decrease-svg');
     const fontIncreaseSvg = document.getElementById('font-increase-svg');
     const toggleChordsSvgWrapper = document.getElementById('toggle-chords-svg-wrapper');
@@ -91,18 +112,75 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
+    // Catalog of audio files present in songs folder
+    // All 44 songs are cataloged
+    const MUSIC_MAP = {
+        "01": "01. A Gente Primeiro.mp3",
+        "02": "02. Alegria de Viver.mp3",
+        "03": "03. Alma Gêmea.mp3",
+        "04": "04. Amigos de Jesus.mp3",
+        "05": "05. Anjos.mp3",
+        "06": "06. Aos Pés do Monte.mp3",
+        "07": "07. Armadura.mp3",
+        "08": "08. Brilhem Mais.mp3",
+        "09": "09. Canção da Alegria Cristã.mp3",
+        "10": "10. Cante e Ame.mp3",
+        "11": "11. Cativar.mp3",
+        "12": "12. Coisas Que Eu Digo Sem Querer.mp3",
+        "13": "13. Consciência.mp3",
+        "14": "14. Convite ao Voo.mp3",
+        "15": "15. Depende de Você.mp3",
+        "16": "16. Ei Você.mp3",
+        "17": "17. Evolução.mp3",
+        "18": "18. Flutuar.mp3",
+        "19": "19. Força do Bem.mp3",
+        "20": "20. Gosto de Você.mp3",
+        "21": "21. Já é Tempo.mp3",
+        "22": "22. Jiacris.mp3",
+        "23": "23. Luz Interior.mp3",
+        "24": "24. Médiuns.mp3",
+        "25": "25. Mocidade com Jesus.mp3",
+        "26": "26. Morada.mp3",
+        "27": "27. O Chamado.mp3",
+        "28": "28. O Dom de Amar.mp3",
+        "29": "29. Os Miosótis Voltam a Florir.mp3",
+        "30": "30. Paciência.mp3",
+        "31": "31. Para Sempre em Meu Coração.mp3",
+        "32": "32. Pedro.mp3",
+        "33": "33. Quanta Luz.mp3",
+        "34": "34. Que eu Seja Amor.mp3",
+        "35": "35. Quebrando os Laços.mp3",
+        "36": "36. Raízes.mp3",
+        "37": "37. Seja Diferente.mp3",
+        "38": "38. Sublime Oração.mp3",
+        "39": "39. Suplica a Jesus.mp3",
+        "40": "40. Te Encontrei.mp3",
+        "41": "41. Te Ofereço Paz.mp3",
+        "42": "42. Tributo a Emmanuel e Chico Xavier.mp3",
+        "43": "43. Um Toque de Amigo.mp3",
+        "44": "44. Viajante do Universo.mp3"
+    };
+
     // Pre-map songs list once to avoid repeated allocations on every search keystroke
     const preparedSongsList = validSongs.map((song, idx) => {
         const numStr = String(idx + 1).padStart(2, '0');
         const cleanTitle = song.title.toUpperCase();
+        const audioFile = MUSIC_MAP[numStr] || null;
+        const hasAudio = Boolean(audioFile);
         return { 
             numStr: numStr,
-            originalText: `<span class="song-number">${numStr}.</span> ${cleanTitle}`, 
+            audioFile: audioFile,
+            hasAudio: hasAudio,
+            originalText: `<span class="song-number">${numStr}.</span> <span class="song-title-name">${cleanTitle}</span>`, 
             hybridSongObj: { 
                 title: cleanTitle, 
                 author: song.author, 
                 lyrics: song.lyrics, 
-                chords: song.chords
+                chords: song.chords,
+                numStr: numStr,
+                audioFile: audioFile,
+                hasAudio: hasAudio,
+                originalIndex: idx
             },
             originalIndex: idx,
             normalizedTitle: removeAccents(cleanTitle.toLowerCase()),
@@ -110,22 +188,599 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
+    // Audio & Playlist Controls
+    function playSongByIndex(index, autoPlay = true) {
+        if (index < 0 || index >= preparedSongsList.length) return;
+        const item = preparedSongsList[index];
+        if (!item.hasAudio) {
+            console.warn(`Música ${item.numStr} não possui áudio catalogado.`);
+            return;
+        }
+
+        currentPlayingIndex = index;
+        isHeaderPlayerVisible = true;
+        const targetSrc = `./songs/${encodeURIComponent(item.audioFile)}`;
+        const resolvedSrc = new URL(targetSrc, window.location.href).href;
+
+        if (globalAudio.src !== resolvedSrc) {
+            globalAudio.src = targetSrc;
+        }
+
+        if (autoPlay) {
+            isAudioPlaying = true;
+            updatePlayerUI();
+            const playPromise = globalAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.warn('Reprodução automática bloqueada pelo navegador:', err);
+                    isAudioPlaying = false;
+                    updatePlayerUI();
+                });
+            }
+        } else {
+            isAudioPlaying = false;
+            updatePlayerUI();
+        }
+    }
+
+    function togglePlayPause() {
+        if (currentPlayingIndex === -1) {
+            startPlayAll();
+            return;
+        }
+
+        if (globalAudio.paused || !isAudioPlaying) {
+            isAudioPlaying = true;
+            isHeaderPlayerVisible = true;
+            updatePlayerUI();
+            const playPromise = globalAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(err => {
+                    console.warn(err);
+                    isAudioPlaying = false;
+                    updatePlayerUI();
+                });
+            }
+        } else {
+            isAudioPlaying = false;
+            globalAudio.pause();
+            updatePlayerUI();
+        }
+    }
+
+    function playNextSong(fromEnded = false) {
+        if (preparedSongsList.length === 0) return;
+        
+        let startIdx = currentPlayingIndex === -1 ? 0 : currentPlayingIndex + 1;
+        let nextIndex = -1;
+
+        // Search forwards for next song with audio
+        for (let i = startIdx; i < preparedSongsList.length; i++) {
+            if (preparedSongsList[i].hasAudio) {
+                nextIndex = i;
+                break;
+            }
+        }
+
+        // Loop to start if not found
+        if (nextIndex === -1) {
+            for (let i = 0; i < preparedSongsList.length; i++) {
+                if (preparedSongsList[i].hasAudio) {
+                    nextIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (nextIndex !== -1) {
+            playSongByIndex(nextIndex, true);
+        }
+    }
+
+    function playPrevSong() {
+        if (preparedSongsList.length === 0) return;
+
+        // If played more than 3 seconds, restart current track
+        if (globalAudio.currentTime > 3) {
+            globalAudio.currentTime = 0;
+            globalAudio.play().catch(err => console.warn(err));
+            return;
+        }
+
+        let startIdx = currentPlayingIndex <= 0 ? preparedSongsList.length - 1 : currentPlayingIndex - 1;
+        let prevIndex = -1;
+
+        // Search backwards for previous song with audio
+        for (let i = startIdx; i >= 0; i--) {
+            if (preparedSongsList[i].hasAudio) {
+                prevIndex = i;
+                break;
+            }
+        }
+
+        // If not found, wrap to end
+        if (prevIndex === -1) {
+            for (let i = preparedSongsList.length - 1; i >= 0; i--) {
+                if (preparedSongsList[i].hasAudio) {
+                    prevIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (prevIndex !== -1) {
+            playSongByIndex(prevIndex, true);
+        }
+    }
+
+    function startPlayAll() {
+        isPlaylistMode = true;
+        const firstPlayable = preparedSongsList.findIndex(s => s.hasAudio);
+        if (firstPlayable !== -1) {
+            playSongByIndex(firstPlayable, true);
+        }
+    }
+
+    function handleSongPlayClick(index) {
+        if (currentPlayingIndex === index) {
+            if (isAudioPlaying) {
+                // Ao parar de tocar na lista de músicas: a música volta ao normal imediatamente e o player fecha
+                isAudioPlaying = false;
+                isHeaderPlayerVisible = false;
+                globalAudio.pause();
+                currentPlayingIndex = -1;
+                updatePlayerUI();
+            } else {
+                // Estava pausado, retoma a reprodução desta música
+                isPlaylistMode = true;
+                isHeaderPlayerVisible = true;
+                playSongByIndex(index, true);
+            }
+        } else {
+            isPlaylistMode = true;
+            isHeaderPlayerVisible = true;
+            playSongByIndex(index, true);
+        }
+    }
+
+    // Web Audio API Visualizer for real-time sound waves
+    let audioCtx = null;
+    let analyser = null;
+    let sourceNode = null;
+    let dataArray = null;
+    let waveAnimFrameId = null;
+    let activeListWaveBars = null;
+    const soundWaveBg = document.getElementById('sound-wave-bg');
+    const waveBars = soundWaveBg ? soundWaveBg.querySelectorAll('.wave-bar') : [];
+
+    const LIST_WAVE_BARS_HTML = `
+        <div class="sound-wave-bg list-wave-bg" aria-hidden="true">
+            <span class="wave-bar b1"></span>
+            <span class="wave-bar b2"></span>
+            <span class="wave-bar b3"></span>
+            <span class="wave-bar b4"></span>
+            <span class="wave-bar b5"></span>
+            <span class="wave-bar b6"></span>
+            <span class="wave-bar b7"></span>
+            <span class="wave-bar b8"></span>
+            <span class="wave-bar b9"></span>
+            <span class="wave-bar b10"></span>
+            <span class="wave-bar b11"></span>
+            <span class="wave-bar b12"></span>
+            <span class="wave-bar b13"></span>
+            <span class="wave-bar b14"></span>
+            <span class="wave-bar b15"></span>
+            <span class="wave-bar b16"></span>
+            <span class="wave-bar b17"></span>
+            <span class="wave-bar b18"></span>
+            <span class="wave-bar b19"></span>
+            <span class="wave-bar b20"></span>
+        </div>
+    `;
+
+    // Logarithmic distribution across dynamic frequency range (bins 1 to 26 of 64)
+    const BIN_MAPPING = [
+        1, 2, 2, 3, 3, 4, 5, 6, 7, 8,
+        9, 10, 12, 14, 16, 18, 20, 22, 24, 26
+    ];
+
+    function initAudioContext() {
+        if (audioCtx) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return;
+        }
+        try {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return;
+            audioCtx = new AudioContextClass();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 128; // 64 frequency bins
+            analyser.smoothingTimeConstant = 0.78; // Fluid responsiveness
+
+            sourceNode = audioCtx.createMediaElementSource(globalAudio);
+            sourceNode.connect(analyser);
+            analyser.connect(audioCtx.destination);
+
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+        } catch (err) {
+            console.warn('Web Audio API não pôde ser inicializado:', err);
+        }
+    }
+
+    function renderWaveFrame() {
+        if (!isAudioPlaying) {
+            stopWaveVisualizer();
+            return;
+        }
+
+        if (analyser && dataArray) {
+            analyser.getByteFrequencyData(dataArray);
+
+            if (waveBars.length > 0) {
+                const totalBars = waveBars.length;
+                for (let i = 0; i < totalBars; i++) {
+                    const binIdx = BIN_MAPPING[i] || i;
+                    const raw = dataArray[binIdx] || 0;
+                    const freqBoost = 1.0 + (i / totalBars) * 0.85;
+                    let normalized = (raw / 255) * freqBoost;
+                    if (normalized > 1) normalized = 1;
+                    const scaleY = 0.6 + normalized * 3.4;
+                    waveBars[i].style.transform = `scaleY(${scaleY.toFixed(2)})`;
+                }
+            }
+
+            if (activeListWaveBars && activeListWaveBars.length > 0) {
+                const totalListBars = activeListWaveBars.length;
+                for (let i = 0; i < totalListBars; i++) {
+                    const binIdx = BIN_MAPPING[i] || i;
+                    const raw = dataArray[binIdx] || 0;
+                    const freqBoost = 1.0 + (i / totalListBars) * 0.85;
+                    let normalized = (raw / 255) * freqBoost;
+                    if (normalized > 1) normalized = 1;
+                    const scaleY = 0.6 + normalized * 3.4;
+                    activeListWaveBars[i].style.transform = `scaleY(${scaleY.toFixed(2)})`;
+                }
+            }
+        }
+
+        waveAnimFrameId = requestAnimationFrame(renderWaveFrame);
+    }
+
+    function startWaveVisualizer() {
+        initAudioContext();
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+
+        if (soundWaveBg) {
+            soundWaveBg.classList.add('audio-reactive');
+        }
+
+        if (!waveAnimFrameId) {
+            waveAnimFrameId = requestAnimationFrame(renderWaveFrame);
+        }
+    }
+
+    function stopWaveVisualizer() {
+        if (waveAnimFrameId) {
+            cancelAnimationFrame(waveAnimFrameId);
+            waveAnimFrameId = null;
+        }
+        if (soundWaveBg) {
+            soundWaveBg.classList.remove('audio-reactive');
+        }
+        if (waveBars) {
+            for (let i = 0; i < waveBars.length; i++) {
+                waveBars[i].style.transform = '';
+            }
+        }
+        if (activeListWaveBars) {
+            for (let i = 0; i < activeListWaveBars.length; i++) {
+                activeListWaveBars[i].style.transform = '';
+            }
+            activeListWaveBars = null;
+        }
+        if (songsList) {
+            songsList.querySelectorAll('.list-wave-bg.audio-reactive').forEach(el => {
+                el.classList.remove('audio-reactive');
+            });
+        }
+    }
+
+    function updatePlayerUI() {
+        if (!globalAudio) return;
+        const isPaused = !isAudioPlaying;
+        const isPlaying = isAudioPlaying;
+        if (headerPlayer) {
+            const shouldShowPlayer = isHeaderPlayerVisible && currentPlayingIndex >= 0 && currentPlayingIndex < preparedSongsList.length;
+            if (shouldShowPlayer) {
+                headerPlayer.classList.remove('hidden');
+            } else {
+                headerPlayer.classList.add('hidden');
+            }
+
+            if (isPlaying) {
+                headerPlayer.classList.add('is-playing');
+                startWaveVisualizer();
+            } else {
+                headerPlayer.classList.remove('is-playing');
+                stopWaveVisualizer();
+            }
+        }
+
+        if (playerIconPlay && playerIconPause) {
+            if (isPaused) {
+                playerIconPlay.classList.remove('hidden');
+                playerIconPause.classList.add('hidden');
+                if (playerPlayBtn) playerPlayBtn.setAttribute('aria-label', 'Reproduzir');
+            } else {
+                playerIconPlay.classList.add('hidden');
+                playerIconPause.classList.remove('hidden');
+                if (playerPlayBtn) playerPlayBtn.setAttribute('aria-label', 'Pausar');
+            }
+        }
+
+        if (currentPlayingIndex >= 0 && currentPlayingIndex < preparedSongsList.length) {
+            const currentItem = preparedSongsList[currentPlayingIndex];
+            const title = currentItem.hybridSongObj.title;
+            const author = currentItem.hybridSongObj.author || 'DESCONHECIDO';
+            
+            if (playerMarqueeContent) {
+                playerMarqueeContent.innerHTML = `<span class="player-song-number">${currentItem.numStr}.</span> <span class="player-song-title">${title}</span> <span class="player-bullet">•</span> <span class="player-artist-name">${author}</span>`;
+            }
+
+            if (playerMarqueeTrack) {
+                // If song changed, restart marquee scroll from the right
+                if (playerMarqueeTrack.dataset.currentSong !== currentItem.numStr) {
+                    playerMarqueeTrack.dataset.currentSong = currentItem.numStr;
+                    playerMarqueeTrack.classList.remove('scrolling');
+                    void playerMarqueeTrack.offsetWidth;
+                    playerMarqueeTrack.classList.add('scrolling');
+                }
+                playerMarqueeTrack.style.animationPlayState = isPaused ? 'paused' : 'running';
+            }
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: `${currentItem.numStr}. ${title}`,
+                    artist: author,
+                    album: 'Hinário Digital'
+                });
+            }
+        } else {
+            if (playerMarqueeContent) {
+                playerMarqueeContent.innerHTML = `HINÁRIO DIGITAL • SELECIONE UMA MÚSICA`;
+            }
+            if (playerMarqueeTrack) {
+                playerMarqueeTrack.classList.remove('scrolling');
+            }
+        }
+
+        // Highlight active playing song, update play/pause buttons, sound wave and marquee in songs list
+        if (songsList) {
+            let currentListBars = null;
+
+            songsList.querySelectorAll('.song-item').forEach(li => {
+                const idx = parseInt(li.dataset.index, 10);
+                if (isNaN(idx)) return;
+                const isCurrent = (idx === currentPlayingIndex);
+                const isCurrentPlaying = isCurrent && isPlaying;
+                const listBg = li.querySelector('.list-wave-bg');
+                const titleTrack = li.querySelector('.song-title-track');
+                const titleText = li.querySelector('.song-title-text');
+                const item = preparedSongsList[idx];
+
+                if (isCurrentPlaying) {
+                    li.classList.add('now-playing');
+                    li.classList.add('is-playing');
+                    if (listBg) {
+                        listBg.classList.add('audio-reactive');
+                        currentListBars = listBg.querySelectorAll('.wave-bar');
+                    }
+                    if (titleText && item) {
+                        const author = item.hybridSongObj.author || 'DESCONHECIDO';
+                        if (titleText.dataset.mode !== 'playing') {
+                            titleText.dataset.mode = 'playing';
+                            titleText.innerHTML = `<span class="song-number">${item.numStr}.</span> <span class="song-title-name">${item.hybridSongObj.title}</span> <span class="song-bullet">•</span> <span class="song-artist-name">${author}</span>`;
+                        }
+                    }
+                    if (titleTrack) {
+                        if (!titleTrack.classList.contains('scrolling')) {
+                            titleTrack.classList.remove('scrolling');
+                            void titleTrack.offsetWidth;
+                            titleTrack.classList.add('scrolling');
+                        }
+                        titleTrack.style.animationPlayState = 'running';
+                    }
+                } else {
+                    li.classList.remove('now-playing');
+                    li.classList.remove('is-playing');
+                    if (listBg) listBg.classList.remove('audio-reactive');
+                    if (titleTrack) {
+                        titleTrack.classList.remove('scrolling');
+                        titleTrack.style.animationPlayState = '';
+                    }
+                    if (titleText) {
+                        titleText.dataset.mode = 'normal';
+                        titleText.innerHTML = item ? item.originalText : '';
+                    }
+                }
+
+                const playBtn = li.querySelector('.song-play-btn');
+
+                if (playBtn && !playBtn.classList.contains('inoperative')) {
+                    const isPlayingBtn = playBtn.dataset.playing === 'true';
+                    if (isPlayingBtn !== isCurrentPlaying) {
+                        playBtn.dataset.playing = isCurrentPlaying ? 'true' : 'false';
+                        playBtn.innerHTML = isCurrentPlaying ? PAUSE_ICON_SVG : PLAY_ICON_SVG;
+                    }
+                    const titleTextStr = isCurrentPlaying ? 'Pausar música' : 'Tocar música';
+                    playBtn.title = titleTextStr;
+                    playBtn.setAttribute('aria-label', titleTextStr);
+                }
+            });
+
+            activeListWaveBars = currentListBars;
+        }
+    }
+
+    // Audio Event Listeners
+    if (globalAudio) {
+        globalAudio.addEventListener('play', () => {
+            isAudioPlaying = true;
+            updatePlayerUI();
+        });
+        globalAudio.addEventListener('playing', () => {
+            isAudioPlaying = true;
+            updatePlayerUI();
+        });
+        globalAudio.addEventListener('pause', () => {
+            isAudioPlaying = false;
+            updatePlayerUI();
+        });
+        globalAudio.addEventListener('ended', () => {
+            isAudioPlaying = false;
+            playNextSong(true);
+        });
+        globalAudio.addEventListener('error', (e) => {
+            console.warn('Erro ao carregar ou reproduzir áudio:', e);
+            isAudioPlaying = false;
+            updatePlayerUI();
+        });
+    }
+
+    if (playerPlayBtn) {
+        playerPlayBtn.addEventListener('click', togglePlayPause);
+    }
+    if (playerPrevBtn) {
+        playerPrevBtn.addEventListener('click', playPrevSong);
+    }
+    if (playerNextBtn) {
+        playerNextBtn.addEventListener('click', () => playNextSong(false));
+    }
+    if (playerMarqueeContainer) {
+        playerMarqueeContainer.addEventListener('click', () => {
+            if (currentPlayingIndex >= 0 && currentPlayingIndex < preparedSongsList.length) {
+                openSong(preparedSongsList[currentPlayingIndex].hybridSongObj);
+            }
+        });
+    }
+
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', () => {
+            if (currentPlayingIndex === -1) {
+                startPlayAll();
+            } else {
+                isAudioPlaying = true;
+                updatePlayerUI();
+                globalAudio.play().catch(err => {
+                    console.warn(err);
+                    isAudioPlaying = false;
+                    updatePlayerUI();
+                });
+            }
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+            isAudioPlaying = false;
+            globalAudio.pause();
+            updatePlayerUI();
+        });
+        navigator.mediaSession.setActionHandler('previoustrack', playPrevSong);
+        navigator.mediaSession.setActionHandler('nexttrack', () => playNextSong(false));
+    }
+
+    updatePlayerUI();
+
+    // Helper to create song list item with play button
+    function createSongItem(item) {
+        const li = document.createElement('li');
+        li.className = 'song-item';
+        li.dataset.index = item.originalIndex;
+
+        const isCurrent = (item.originalIndex === currentPlayingIndex);
+        const isCurrentPlaying = isCurrent && isAudioPlaying;
+        const author = item.hybridSongObj.author || 'DESCONHECIDO';
+
+        if (isCurrentPlaying) {
+            li.classList.add('now-playing');
+            li.classList.add('is-playing');
+        }
+
+        const isInoperative = !item.hasAudio;
+        const currentIconSvg = isCurrentPlaying ? PAUSE_ICON_SVG : PLAY_ICON_SVG;
+        const titleText = isCurrentPlaying ? 'Pausar música' : 'Tocar música';
+        const ariaLabel = isCurrentPlaying ? 'Pausar ' + item.hybridSongObj.title : 'Tocar ' + item.hybridSongObj.title;
+
+        const disabledAttr = isInoperative 
+            ? ' disabled class="song-play-btn inoperative" title="Música não catalogada" aria-label="Música não catalogada"' 
+            : ` class="song-play-btn" title="${titleText}" aria-label="${ariaLabel}" data-playing="${isCurrentPlaying ? 'true' : 'false'}"`;
+
+        const titleHtml = isCurrentPlaying
+            ? `<span class="song-number">${item.numStr}.</span> <span class="song-title-name">${item.hybridSongObj.title}</span> <span class="song-bullet">•</span> <span class="song-artist-name">${author}</span>`
+            : item.originalText;
+        const trackClass = isCurrentPlaying ? 'song-title-track scrolling' : 'song-title-track';
+
+        li.innerHTML = `
+            <div class="song-title-wrapper">
+                ${LIST_WAVE_BARS_HTML}
+                <div class="${trackClass}">
+                    <span class="song-title-text" data-mode="${isCurrentPlaying ? 'playing' : 'normal'}">${titleHtml}</span>
+                </div>
+            </div>
+            <button${disabledAttr}>
+                ${currentIconSvg}
+            </button>
+        `;
+
+        if (isCurrentPlaying) {
+            const listBg = li.querySelector('.list-wave-bg');
+            if (listBg) listBg.classList.add('audio-reactive');
+        }
+
+        li.addEventListener('click', () => openSong(item.hybridSongObj));
+
+        const playBtn = li.querySelector('.song-play-btn');
+        if (playBtn && !isInoperative) {
+            playBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleSongPlayClick(item.originalIndex);
+            });
+        }
+        return li;
+    }
+
+    // Helper to create "TOCAR TODAS" top item with playlist button
+    function createPlayAllItem() {
+        const li = document.createElement('li');
+        li.className = 'song-item play-all-item';
+        li.innerHTML = `
+            <button class="play-all-btn" aria-label="Tocar todas as músicas" title="Tocar Todas">
+                ${PLAYLIST_ICON_SVG}
+                <span class="play-all-title">TOCAR TODAS</span>
+            </button>
+        `;
+        li.addEventListener('click', () => {
+            startPlayAll();
+        });
+        return li;
+    }
+
     // Render List
     function renderSongs(filter = '') {
         songsList.innerHTML = '';
         const searchWord = removeAccents(filter.toLowerCase().trim());
 
         if (searchWord === '') {
-            // Render all in standard numerical sequence
+            // Render all in standard numerical sequence with "TOCAR TODAS" at top
+            songsList.appendChild(createPlayAllItem());
             preparedSongsList.forEach((item) => {
-                const li = document.createElement('li');
-                li.className = 'song-item';
-                li.innerHTML = item.originalText;
-                li.addEventListener('click', () => openSong(item.hybridSongObj));
-                songsList.appendChild(li);
+                songsList.appendChild(createSongItem(item));
             });
             updateFabBackListBtnVisibility();
             adjustListFontSize();
+            updatePlayerUI();
             return;
         }
 
@@ -176,14 +831,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         titleMatches.forEach((match) => {
-            const li = document.createElement('li');
-            li.className = 'song-item';
-            li.innerHTML = match.item.originalText;
-            li.addEventListener('click', () => openSong(match.item.hybridSongObj));
-            songsList.appendChild(li);
+            songsList.appendChild(createSongItem(match.item));
         });
         updateFabBackListBtnVisibility();
         adjustListFontSize();
+        updatePlayerUI();
     }
 
     // Is it a chord line?
@@ -283,8 +935,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const textWidth = probe.clientWidth;
             document.body.removeChild(probe);
 
-            // Available width inside song item (accounting for item side padding and small margin)
-            const availableWidth = listWidth - 8;
+            // Available width inside song item (accounting for item side padding, play button width, gap and small margin)
+            const playBtnSpace = 40; // 28px button + 12px gap
+            const availableWidth = listWidth - 8 - playBtnSpace;
             if (textWidth > availableWidth && availableWidth > 50) {
                 const ratio = (availableWidth * 0.98) / textWidth;
                 const newSize = Math.max(0.60, baseSize * ratio);
@@ -433,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!song) return; // safeguard
         currentSong = song;
         searchInput.blur();
-        
+
         // Reset to minimum font size (12px / 0.75rem)
         currentFontSize = 0.75;
         songContentEl.style.fontSize = currentFontSize + 'rem';
@@ -491,6 +1144,9 @@ document.addEventListener('DOMContentLoaded', () => {
         viewList.classList.add('hidden');
         viewMenu.classList.remove('hidden');
         viewMenu.classList.add('active');
+        if (isAudioPlaying) {
+            startWaveVisualizer();
+        }
     }
 
     // View Lists Route
@@ -1036,19 +1692,18 @@ document.addEventListener('DOMContentLoaded', () => {
         searchOverlay.scrollLeft = searchInput.scrollLeft;
     });
 
-    // Remove Neon ativo após 200ms nos botões do Menu, Players, Configurações e Mensagens para retorno rápido (era 300ms)
+    function activateNeon(el) {
+        el.classList.add('neon-active');
+        setTimeout(() => {
+            el.classList.remove('neon-active');
+            el.blur(); // Perde o foco fantasma no touch 
+        }, 200);
+    }
+
+    // Feedback visual (neon ativo) nos botões interativos
     document.querySelectorAll('.flex-btn, #theme-btn, #report-messages-btn, #settings-btn, #list-songs-btn, #search-songs-btn').forEach(btn => {
-        // Intercepta qualquer forma de click/pressão pra garantir em todos os dipositivos
         btn.addEventListener('mousedown', () => activateNeon(btn));
         btn.addEventListener('touchstart', () => activateNeon(btn), {passive: true});
-
-        function activateNeon(el) {
-            el.classList.add('neon-active');
-            setTimeout(() => {
-                el.classList.remove('neon-active');
-                el.blur(); // Perde o foco fantasma no touch 
-            }, 200);
-        }
     });
 
     // Scroll Listener for Header Bars
