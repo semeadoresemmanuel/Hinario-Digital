@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hinario-v1.1.0';
+const CACHE_NAME = 'hinario-v1.2.0';
 
 // Recursos essenciais do shell do aplicativo para pré-cache
 const PRECACHE_URLS = [
@@ -94,68 +94,82 @@ self.addEventListener('fetch', event => {
     );
 });
 
+// Controle de downloads de áudio em andamento para evitar requisições redundantes
+const pendingAudioDownloads = new Map();
+
 /**
- * Gerenciador de requisições de áudio com suporte a HTTP 206 (Partial Content) para offline.
+ * Gerenciador de requisições de áudio:
+ * 1. Reprodução instantânea (Zero Delay / streaming nativo imediato via rede).
+ * 2. Cache transparente em segundo plano (background non-blocking download).
+ * 3. Suporte offline total com Range Requests (HTTP 206) a partir do cache local.
  */
 async function handleAudioRequest(request) {
     const cache = await caches.open(CACHE_NAME);
     const rangeHeader = request.headers.get('range');
-    const cleanUrl = request.url;
+    const url = new URL(request.url);
+    const cleanUrl = url.origin + url.pathname;
 
-    // Tenta encontrar o áudio completo armazenado no cache
-    let cachedResponse = await cache.match(cleanUrl);
+    // 1. Se já está no cache local, serve imediatamente com suporte a Range (offline/instant)
+    const cachedResponse = await cache.match(cleanUrl);
 
-    // Se estiver online e não estiver em cache, faz o download do arquivo completo (status 200) para armazenar
-    if (!cachedResponse && navigator.onLine) {
+    if (cachedResponse) {
+        if (!rangeHeader) {
+            return cachedResponse;
+        }
+
         try {
-            const fullResponse = await fetch(cleanUrl);
-            if (fullResponse && fullResponse.status === 200) {
-                await cache.put(cleanUrl, fullResponse.clone());
-                cachedResponse = fullResponse;
+            const arrayBuffer = await cachedResponse.arrayBuffer();
+            const total = arrayBuffer.byteLength;
+            const parts = rangeHeader.replace(/bytes=/, '').split('-');
+            const start = parseInt(parts[0], 10) || 0;
+            const end = parts[1] ? parseInt(parts[1], 10) : total - 1;
+
+            if (start >= total || end >= total) {
+                return new Response('', {
+                    status: 416,
+                    statusText: 'Range Not Satisfiable',
+                    headers: { 'Content-Range': `bytes */${total}` }
+                });
             }
-        } catch (e) {
-            // Em caso de falha de rede
-        }
-    }
 
-    // Se não temos a resposta em cache e estamos online, repassa a requisição original
-    if (!cachedResponse) {
-        return fetch(request);
-    }
-
-    // Se o player não enviou cabeçalho Range, retorna o áudio completo (status 200)
-    if (!rangeHeader) {
-        return cachedResponse;
-    }
-
-    // Processa Range Request para o áudio em cache (HTTP 206 Partial Content)
-    try {
-        const arrayBuffer = await cachedResponse.arrayBuffer();
-        const total = arrayBuffer.byteLength;
-        const parts = rangeHeader.replace(/bytes=/, '').split('-');
-        const start = parseInt(parts[0], 10) || 0;
-        const end = parts[1] ? parseInt(parts[1], 10) : total - 1;
-
-        if (start >= total || end >= total) {
-            return new Response('', {
-                status: 416,
-                statusText: 'Range Not Satisfiable',
-                headers: { 'Content-Range': `bytes */${total}` }
+            const sliced = arrayBuffer.slice(start, end + 1);
+            return new Response(sliced, {
+                status: 206,
+                statusText: 'Partial Content',
+                headers: {
+                    'Content-Type': cachedResponse.headers.get('Content-Type') || 'audio/mpeg',
+                    'Content-Range': `bytes ${start}-${end}/${total}`,
+                    'Content-Length': String(sliced.byteLength),
+                    'Accept-Ranges': 'bytes'
+                }
             });
+        } catch (err) {
+            return cachedResponse;
         }
-
-        const sliced = arrayBuffer.slice(start, end + 1);
-        return new Response(sliced, {
-            status: 206,
-            statusText: 'Partial Content',
-            headers: {
-                'Content-Type': cachedResponse.headers.get('Content-Type') || 'audio/mpeg',
-                'Content-Range': `bytes ${start}-${end}/${total}`,
-                'Content-Length': String(sliced.byteLength),
-                'Accept-Ranges': 'bytes'
-            }
-        });
-    } catch (err) {
-        return cachedResponse;
     }
+
+    // 2. Não está em cache:
+    // Dispara o download completo em segundo plano para persistir para uso offline,
+    // SEM BLOQUEAR o streaming do player
+    if (!pendingAudioDownloads.has(cleanUrl)) {
+        const downloadPromise = fetch(cleanUrl)
+            .then(networkFull => {
+                if (networkFull && networkFull.status === 200) {
+                    return cache.put(cleanUrl, networkFull);
+                }
+            })
+            .catch(() => {})
+            .finally(() => {
+                pendingAudioDownloads.delete(cleanUrl);
+            });
+        pendingAudioDownloads.set(cleanUrl, downloadPromise);
+    }
+
+    // 3. Retorna imediatamente a requisição de streaming à rede: início instantâneo de reprodução (sem delay)
+    return fetch(request).catch(() => {
+        return new Response('Áudio não disponível offline', {
+            status: 503,
+            statusText: 'Service Unavailable'
+        });
+    });
 }
