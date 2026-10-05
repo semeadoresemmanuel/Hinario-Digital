@@ -126,6 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
+    // Helper to sanitize text for fast search matching (removes markers, punctuation & normalizes spacing)
+    function sanitizeForSearch(str) {
+        return removeAccents((str || '')
+            .replace(/\[.*?\]/g, ' ')
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”’…]/g, ' ')
+            .toLowerCase()
+            .replace(/\s+/g, ' ')
+            .trim());
+    }
+
     // Catalog of audio files present in songs folder
     // All 45 songs are cataloged
     const MUSIC_MAP = {
@@ -198,8 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalIndex: idx
             },
             originalIndex: idx,
-            normalizedTitle: removeAccents(cleanTitle.toLowerCase()),
-            normalizedAuthor: removeAccents((song.author || '').toLowerCase())
+            normalizedTitle: sanitizeForSearch(cleanTitle),
+            normalizedAuthor: sanitizeForSearch(song.author),
+            normalizedLyrics: sanitizeForSearch(song.lyrics)
         };
     });
 
@@ -986,7 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render List
     function renderSongs(filter = '') {
         songsList.innerHTML = '';
-        const searchWord = removeAccents(filter.toLowerCase().trim());
+        const searchWord = sanitizeForSearch(filter);
 
         if (searchWord === '') {
             // Render all in standard numerical sequence with "TOCAR TODAS" at top
@@ -1002,13 +1013,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Filter and score for search accuracy
         let titleMatches = [];
+        const searchTerms = searchWord.split(' ').filter(Boolean);
+        const isNumberSearch = /^\d+$/.test(searchWord);
 
         preparedSongsList.forEach((item) => {
             const normalizedTitle = item.normalizedTitle;
             const normalizedAuthor = item.normalizedAuthor;
+            const normalizedLyrics = item.normalizedLyrics;
             
             let score = 0;
-            const isNumberSearch = /^\d+$/.test(searchWord);
 
             if (isNumberSearch) {
                 if (item.numStr.includes(searchWord)) {
@@ -1034,6 +1047,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 titleMatches.push({ item, score });
             } else if (normalizedAuthor && normalizedAuthor.includes(searchWord)) {
                 score = 10; // Author/Artist contains
+                titleMatches.push({ item, score });
+            } else if (normalizedLyrics && normalizedLyrics.includes(searchWord)) {
+                score = 5; // Trecho exato da letra da música
+                titleMatches.push({ item, score });
+            } else if (searchTerms.length > 1 && normalizedLyrics && searchTerms.every(term => normalizedLyrics.includes(term))) {
+                score = 3; // Todas as palavras da busca presentes na letra
                 titleMatches.push({ item, score });
             }
         });
