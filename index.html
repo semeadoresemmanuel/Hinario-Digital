@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#f7f7f7">
     <meta name="description" content="Hinário Digital - Letras e Cifras">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Hinário Digital">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Hinário Digital">
@@ -200,15 +200,70 @@
 
         <!-- Song View -->
         <div id="view-song" class="view hidden">
-            <div class="song-header-bar">
-                <button id="song-back-btn" class="icon-btn" aria-label="Voltar">
-                    <svg viewBox="0 0 24 24" class="back-icon hover-scale" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M 16.2 0 L 19.8 3.5 L 11.3 12 L 19.8 20.5 L 16.2 24 L 4.2 12 Z" />
-                    </svg>
-                </button>
-                <div class="song-title-group">
-                    <h2 id="song-title">Song Title</h2>
-                    <h3 id="song-author"></h3>
+            <!-- Sticky Header & Player na Página de Letras -->
+            <div class="song-sticky-header">
+                <div class="song-header-bar">
+                    <button id="song-back-btn" class="icon-btn" aria-label="Voltar">
+                        <svg viewBox="0 0 24 24" class="back-icon hover-scale" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 16.2 0 L 19.8 3.5 L 11.3 12 L 19.8 20.5 L 16.2 24 L 4.2 12 Z" />
+                        </svg>
+                    </button>
+                    <div class="song-title-group">
+                        <h2 id="song-title">Song Title</h2>
+                        <h3 id="song-author"></h3>
+                    </div>
+                </div>
+                
+                <!-- Player na Página de Letras (posicionado entre o nome da música/artista e as opções de zoom e cifra) -->
+                <div id="song-player" class="header-player song-view-player hidden">
+                    <div class="player-marquee-container" id="song-player-marquee-container" title="Clique para abrir esta música">
+                        <!-- Efeito visual de ondas sonoras verde luminoso atrás do título -->
+                        <div class="sound-wave-bg" id="song-sound-wave-bg" aria-hidden="true">
+                            <span class="wave-bar b1"></span>
+                            <span class="wave-bar b2"></span>
+                            <span class="wave-bar b3"></span>
+                            <span class="wave-bar b4"></span>
+                            <span class="wave-bar b5"></span>
+                            <span class="wave-bar b6"></span>
+                            <span class="wave-bar b7"></span>
+                            <span class="wave-bar b8"></span>
+                            <span class="wave-bar b9"></span>
+                            <span class="wave-bar b10"></span>
+                            <span class="wave-bar b11"></span>
+                            <span class="wave-bar b12"></span>
+                            <span class="wave-bar b13"></span>
+                            <span class="wave-bar b14"></span>
+                            <span class="wave-bar b15"></span>
+                            <span class="wave-bar b16"></span>
+                            <span class="wave-bar b17"></span>
+                            <span class="wave-bar b18"></span>
+                            <span class="wave-bar b19"></span>
+                            <span class="wave-bar b20"></span>
+                        </div>
+                        <div id="song-player-marquee-track" class="player-marquee-track">
+                            <span class="player-marquee-content" id="song-player-marquee-content"></span>
+                        </div>
+                    </div>
+                    <div class="player-controls-row">
+                        <button id="song-player-prev-btn" class="player-btn hover-scale" aria-label="Música anterior" title="Música anterior">
+                            <svg viewBox="0 0 24 24" class="player-icon" fill="currentColor">
+                                <path d="M 6 5 L 8 5 L 8 19 L 6 19 Z M 18 5 L 8.5 12 L 18 19 Z" />
+                            </svg>
+                        </button>
+                        <button id="song-player-play-btn" class="player-btn player-play-main hover-scale" aria-label="Reproduzir / Pausar" title="Reproduzir / Pausar">
+                            <svg id="song-player-icon-play" viewBox="0 0 24 24" class="player-icon-main" fill="currentColor">
+                                <path d="M 8 5.14 v 13.72 L 19 12 Z" />
+                            </svg>
+                            <svg id="song-player-icon-pause" viewBox="0 0 24 24" class="player-icon-main hidden" fill="currentColor">
+                                <path d="M 6 19 h 4 V 5 H 6 v 14 z m 8 -14 v 14 h 4 V 5 h -4 z" />
+                            </svg>
+                        </button>
+                        <button id="song-player-next-btn" class="player-btn hover-scale" aria-label="Próxima música" title="Próxima música">
+                            <svg viewBox="0 0 24 24" class="player-icon" fill="currentColor">
+                                <path d="M 6 5 L 15.5 12 L 6 19 Z M 16 5 L 18 5 L 18 19 L 16 19 Z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
             

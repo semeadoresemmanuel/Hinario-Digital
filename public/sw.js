@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hinario-v1.2.0';
+const CACHE_NAME = 'hinario-v1.3.0';
 
 // Recursos essenciais do shell do aplicativo para pré-cache
 const PRECACHE_URLS = [
@@ -44,7 +44,7 @@ self.addEventListener('fetch', event => {
     const url = new URL(request.url);
 
     // 1. Arquivos de Áudio (songs/*.mp3): Suporte offline completo com Range Requests (HTTP 206)
-    if (url.pathname.includes('/songs/') || url.pathname.includes('/Musics/') || url.pathname.endsWith('.mp3')) {
+    if (url.pathname.includes('/songs/') || url.pathname.endsWith('.mp3')) {
         event.respondWith(handleAudioRequest(request));
         return;
     }
