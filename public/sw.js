@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hinario-v1.3.1';
+const CACHE_NAME = 'hinario-v1.3.2';
 
 // Recursos essenciais do shell do aplicativo para pré-cache
 const PRECACHE_URLS = [

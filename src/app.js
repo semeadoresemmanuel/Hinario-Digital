@@ -624,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (songPlayer) {
-            const shouldShowSongPlayer = currentPlayingIndex >= 0 && currentPlayingIndex < preparedSongsList.length;
+            const shouldShowSongPlayer = isPlaying && currentPlayingIndex >= 0 && currentPlayingIndex < preparedSongsList.length;
             if (shouldShowSongPlayer) {
                 songPlayer.classList.remove('hidden');
             } else {
